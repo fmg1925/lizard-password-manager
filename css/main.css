@@ -77,6 +77,10 @@ button.dark-mode, select.dark-mode {
     border-radius: 10px;
 }
 
+#welcome-text {
+    margin-left: 10px;
+}
+
 #user-button.dark-mode {
     filter: contrast(1%);
 }
@@ -121,4 +125,9 @@ li, label, input {
 
 #addAccountButton.dark-mode {
     background: rgba(255, 255, 255, 0.1);
+}
+
+#info {
+    text-align: center;
+    margin-bottom: 20px;
 }

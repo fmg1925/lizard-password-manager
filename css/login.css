@@ -70,7 +70,7 @@ header {
 #loginForm input {
     height: 30px;
     font-size: 20px;
-    color: azure;
+    padding-left: 5px;
     border-radius: 2px;
     background-color: rgba(0, 0, 0, 0.3);
     border: none;
@@ -88,4 +88,9 @@ header {
 a {
     font-size: 24px;
     margin-left: 20px;
+}
+
+#info {
+    margin-top: 10px;
+    text-align: center;
 }

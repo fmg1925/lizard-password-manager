@@ -1,12 +1,13 @@
+const PORT = 3000;
+
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
     e.preventDefault();
   
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
   
-    console.log(password);
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -16,7 +17,6 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   
       // Log the response text for debugging purposes
       const responseText = await response.text();
-      console.log("Server response:", responseText);
   
       if (!response.ok) {
         // If response is not OK (status not 2xx)
@@ -26,7 +26,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         } catch (e) {
           errorData = { message: responseText }; // Fallback to text if it's not JSON
         }
-        alert(errorData.message || "An error occurred"); // Show error message from server
+        document.getElementById("info").innerHTML = errorData.message;
       } else {
         let result;
         try {
@@ -34,7 +34,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         } catch (e) {
           result = { message: responseText }; // Fallback to text if it's not JSON
         }
-        alert(result.message); // Show success message or handle accordingly
+        document.getElementById("info").innerHTML = "User registered succesfully";
         // Set a cookie valid for 7 days
         const days = 7;
         const date = new Date();
@@ -44,7 +44,6 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         window.location.href = "main.html";
       }
     } catch (err) {
-      console.error("Error during register:", err);
-      alert("An error occurred during register. Please try again later.");
+      document.getElementById("info").innerHTML = "Error registering account";
     }
   });

@@ -1,3 +1,5 @@
+const PORT = 3000;
+
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -5,7 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +17,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     // Log the response text for debugging purposes
     const responseText = await response.text();
-    console.log("Server response:", responseText);
 
     if (!response.ok) {
       // If response is not OK (status not 2xx)
@@ -25,7 +26,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       } catch (e) {
         errorData = { message: responseText }; // Fallback to text if it's not JSON
       }
-      alert(errorData.message || "An error occurred"); // Show error message from server
+      document.getElementById("info").innerHTML = "Incorrect username or password";
     } else {
       let result;
       try {
@@ -33,7 +34,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       } catch (e) {
         result = { message: responseText }; // Fallback to text if it's not JSON
       }
-      alert(result.message); // Show success message or handle accordingly
+      document.getElementById("info").innerHTML = result.message;
       // Set a cookie valid for 7 days
       const days = 7;
       const date = new Date();
@@ -44,6 +45,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     }
   } catch (err) {
     console.error("Error during login:", err);
-    alert("An error occurred during login. Please try again later.");
+    document.getElementById("info").innerHTML = "Error encountered while logging in";
   }
 });

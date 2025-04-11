@@ -1,3 +1,5 @@
+const PORT = 3000;
+
 function reloadPage() {
   const lightmode = document.getElementById("mode-select");
   let mode = lightmode.value == 1 ? "light" : "dark";
@@ -14,43 +16,57 @@ function getCookieObject() {
   );
 }
 
-function loadAccounts() {
-  const username = document.cookie.replace(
-    /(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/,
-    "$1"
-  );
+async function loadAccounts() {
+  const cookies = getCookieObject();
 
-  if (!username) {
+  if (!cookies.username) {
     console.error("Username cookie is not set.");
     return;
   }
   fetch(
-    `http://localhost:3000/accounts?username=${encodeURIComponent(username)}`,
+    `${window.location.protocol}//${
+      window.location.hostname
+    }:${PORT}/accounts?username=${encodeURIComponent(cookies.username)}`,
     {
       method: "GET",
     }
   )
     .then((response) => response.json())
     .then((data) => {
+      if (data.length === 0)
+        return (document.getElementById("info").innerHTML =
+          "You have no accounts registered");
       const accountsList = document.getElementById("accounts-list");
+      accountsList.innerHTML = "";
 
-      if (Array.isArray(data)) {
-        data.forEach((account) => {
+      if (Array.isArray(data) && Array.isArray(data[0])) {
+        data[0].forEach((account) => {
           const listItem = document.createElement("li");
           listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}`;
 
           const showPasswordButton = document.createElement("button");
           showPasswordButton.textContent = "Show Password";
           const cookies = getCookieObject();
-          if (cookies.theme === "dark") showPasswordButton.classList.add("dark-mode");
+          if (cookies.theme === "dark")
+            showPasswordButton.classList.add("dark-mode");
+
+          const editAccountButton = document.createElement("button");
+          editAccountButton.textContent = "Edit Account";
+          if (cookies.theme === "dark")
+            editAccountButton.classList.add("dark-mode");
+
+          const deleteAccountButton = document.createElement("button");
+          deleteAccountButton.textContent = "Delete Account";
+          if (cookies.theme === "dark")
+            deleteAccountButton.classList.add("dark-mode");
 
           // Attach event listener to the button
           showPasswordButton.addEventListener("click", async () => {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              alert("Please enter your master password.");
-              return;
+              return document.getElementById("info").innerHTML =
+                "Please enter your master password";
             }
 
             let account_password = account.account_password;
@@ -58,11 +74,83 @@ function loadAccounts() {
               account_password,
               masterPassword
             );
+            if (decryptedPassword === "") {
+              return (document.getElementById("info").innerHTML =
+                "Incorrect master password");
+            }
             showPasswordButton.style.display = "none";
             listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, password: ${decryptedPassword}`;
           });
 
+          editAccountButton.addEventListener("click", async () => {
+            const masterPassword =
+              document.getElementById("master-password").value;
+            if (!masterPassword) {
+              document.getElementById("info").innerHTML =
+                "Please enter your master password";
+              return;
+            }
+
+            newAccountName = document.getElementById('site').value;
+            if(!newAccountName) return document.getElementById("info").innerHTML = "Please enter the site name.";
+            newAccountUsername = document.getElementById('username').value;
+            if(!newAccountUsername) return document.getElementById("info").innerHTML = "Please enter the account username.";
+            newAccountPassword = document.getElementById('password').value;
+            if(!newAccountPassword) return document.getElementById("info").innerHTML = "Please enter the account password.";
+            const response = await fetch(
+              `${window.location.protocol}//${window.location.hostname}:${PORT}/editAccount`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  old_account_name: account.account_name,
+                  old_account_password: account.account_password,
+                  old_account_username: account.account_username,
+                  masterPassword: masterPassword,
+                  account_name : newAccountName,
+                  account_password: newAccountPassword,
+                  account_username: newAccountUsername,
+                  user_id: account.user_id,
+                }), 
+              }
+            );
+            if(response.ok) { document.getElementById("info").innerHTML = "Account modified succesfully"; return window.reloadPage(); }
+            else {return document.getElementById("info").innerHTML = "Incorrect master password";}
+          });
+
+          deleteAccountButton.addEventListener("click", async () => {
+            const masterPassword =
+              document.getElementById("master-password").value;
+            if (!masterPassword) {
+              document.getElementById("info").innerHTML =
+                "Please enter your master password";
+              return;
+            }
+            const response = await fetch(
+              `${window.location.protocol}//${window.location.hostname}:${PORT}/deleteAccount`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  masterPassword: masterPassword,
+                  account_name: account.account_name,
+                  account_password: account.account_password,
+                  account_username: account.account_username,
+                  user_id: account.user_id,
+                }), 
+              }
+            );
+            if(response.ok) { document.getElementById("info").innerHTML = "Account deleted succesfully"; return window.reloadPage(); }
+            else {return document.getElementById("info").innerHTML = "Incorrect master password";}
+          });
+
           listItem.appendChild(showPasswordButton);
+          listItem.appendChild(editAccountButton);
+          listItem.appendChild(deleteAccountButton);
           accountsList.appendChild(listItem);
         });
       } else {
@@ -71,32 +159,44 @@ function loadAccounts() {
     })
     .catch((error) => {
       console.error("Error fetching accounts:", error);
-      alert("There was an error fetching the accounts.");
+      document.getElementById("info").innerHTML = "Error loading accounts";
     });
 }
 
 async function decrypt(account_password, masterPassword) {
-  const response = await fetch("http://localhost:3000/decrypt", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ account_password, masterPassword }),
-  });
+  try {
+    const response = await fetch(
+      `${window.location.protocol}//${window.location.hostname}:${PORT}/decrypt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ account_password, masterPassword }),
+      }
+    );
 
-  const result = await response.json();
-  return result.decrypted;
+    const result = await response.json();
+
+    if (!response.ok) {
+      return "";
+    }
+
+    return result.decrypted || "";
+  } catch (error) {
+    console.error("Failed to send request:", error);
+    return "";
+  }
 }
 
 function loadCookies() {
   const cookies = getCookieObject();
 
-  if (cookies.username)
+  if (cookies.username) {
     document.getElementById("welcome-text").innerHTML =
       "Welcome " + cookies.username;
-
-  if (cookies.username) loadAccounts();
-  else window.location.href = "./register.html";
+    loadAccounts();
+  } else window.location.href = "./register.html";
 }
 
 function applyThemeFromCookie() {
@@ -150,24 +250,28 @@ document
 
     const masterPassword = document.getElementById("master-password").value;
     if (!masterPassword) {
-      alert("Please enter your master password.");
+      document.getElementById("info").innerHTML =
+        "Please enter your master password";
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:3000/add-account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          masterPassword,
-          accountSite,
-          accountUsername,
-          accountPassword,
-        }),
-      });
+      const response = await fetch(
+        `${window.location.protocol}//${window.location.hostname}:${PORT}/add-account`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            masterPassword,
+            accountSite,
+            accountUsername,
+            accountPassword,
+          }),
+        }
+      );
 
       // Log the response text for debugging purposes
       const responseText = await response.text();
@@ -180,7 +284,7 @@ document
         } catch (e) {
           errorData = { message: responseText }; // Fallback to text if it's not JSON
         }
-        alert(errorData.message || "An error occurred"); // Show error message from server
+        document.getElementById("info").innerHTML = errorData.message;
       } else {
         let result;
         try {
@@ -188,12 +292,12 @@ document
         } catch (e) {
           result = { message: responseText }; // Fallback to text if it's not JSON
         }
-        alert(result.message); // Show success message or handle accordingly
+        document.getElementById("info").innerHTML = result.message;
       }
     } catch (err) {
-      console.error("Error during register:", err);
-      alert("An error occurred during register. Please try again later.");
+      document.getElementById("info").innerHTML = "Error adding account";
     }
+    loadAccounts();
   });
 
 // Run it as soon as possible

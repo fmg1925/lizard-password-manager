@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -10,16 +10,15 @@
 </head>
 
 <body>
-  <header>
+  <header> <!-- Barra al tope de la pantalla -->
     <div class="top-left"><input id="header-img" type="image" src="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg" onclick="window.location='./main.html'"></div>
     <div class="top-center">
       <h1 id="title">Lizard Password Manager</h1>
     </div>
-    <div class="top-right"><input id="user-button" type="image"
-        src="https://cdn-icons-png.flaticon.com/512/61/61205.png"></button></div>
+    <div class="top-right"><input id="user-button" type="image" src="https://cdn-icons-png.flaticon.com/512/61/61205.png"></div>
   </header>
-  <h1 id="info"></h1>
-  <form id="loginForm">
+  <h1 id="info"></h1> <!-- Texto para mostrar mensajes de las acciones del usuario -->
+  <form id="loginForm"> <!-- Formulario de inicio de sesión -->
     <label for="username">Username:</label>
     <input id="username" type="text" name="username" placeholder="Username" required><br><br>
     <label for="password">Password:</label>
@@ -27,7 +26,7 @@
     <button id="login-button" type="submit">Login</button>
     <a href="register.html">Register?</a>
   </form>
-  <script src="js/login.js" defer></script>
+  <script src="js/login.js" defer></script> <!-- Script de página de inicio de sesión -->
 </body>
 
 </html>

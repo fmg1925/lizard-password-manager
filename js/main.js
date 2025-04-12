@@ -1,6 +1,6 @@
-const PORT = 3000;
+const PORT = 3000; // Puerto Node
 
-function reloadPage() {
+function reloadPage() { // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
   const lightmode = document.getElementById("mode-select");
   let mode = lightmode.value == 1 ? "light" : "dark";
   const days = 7;
@@ -10,13 +10,14 @@ function reloadPage() {
   document.cookie = `theme=${mode}; ${expires}; path=/; samesite=Strict`;
   location.reload();
 }
-function getCookieObject() {
+
+function getCookieObject() { // Conseguir cookies
   return Object.fromEntries(
     document.cookie.split("; ").map((cookie) => cookie.split("="))
   );
 }
 
-async function loadAccounts() {
+async function loadAccounts() { // Cargar cuentas
   const cookies = getCookieObject();
 
   if (!cookies.username) {
@@ -37,16 +38,16 @@ async function loadAccounts() {
         return (document.getElementById("info").innerHTML =
           "You have no accounts registered");
       const accountsList = document.getElementById("accounts-list");
-      accountsList.innerHTML = "";
+      accountsList.innerHTML = ""; // Vaciar lista (en caso de recargar)
 
       if (Array.isArray(data) && Array.isArray(data[0])) {
         data[0].forEach((account) => {
-          const listItem = document.createElement("li");
+          const listItem = document.createElement("li"); // Añadir cuentas a la lista
           listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}`;
 
           const showPasswordButton = document.createElement("button");
           showPasswordButton.textContent = "Show Password";
-          const cookies = getCookieObject();
+          const cookies = getCookieObject(); // Aplicar tema oscuro a los nuevos botones
           if (cookies.theme === "dark")
             showPasswordButton.classList.add("dark-mode");
 
@@ -61,7 +62,7 @@ async function loadAccounts() {
             deleteAccountButton.classList.add("dark-mode");
 
           // Attach event listener to the button
-          showPasswordButton.addEventListener("click", async () => {
+          showPasswordButton.addEventListener("click", async () => { // Mostrar contraseña
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
@@ -82,7 +83,7 @@ async function loadAccounts() {
             listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, password: ${decryptedPassword}`;
           });
 
-          editAccountButton.addEventListener("click", async () => {
+          editAccountButton.addEventListener("click", async () => { // Editar cuenta
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
@@ -120,7 +121,7 @@ async function loadAccounts() {
             else {return document.getElementById("info").innerHTML = "Incorrect master password";}
           });
 
-          deleteAccountButton.addEventListener("click", async () => {
+          deleteAccountButton.addEventListener("click", async () => { // Eliminar cuenta
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
@@ -163,7 +164,7 @@ async function loadAccounts() {
     });
 }
 
-async function decrypt(account_password, masterPassword) {
+async function decrypt(account_password, masterPassword) { // Desencriptar contraseña
   try {
     const response = await fetch(
       `${window.location.protocol}//${window.location.hostname}:${PORT}/decrypt`,
@@ -189,19 +190,19 @@ async function decrypt(account_password, masterPassword) {
   }
 }
 
-function loadCookies() {
+function loadCookies() { // Cargar cookies
   const cookies = getCookieObject();
 
-  if (cookies.username) {
+  if (cookies.username) { 
     document.getElementById("welcome-text").innerHTML =
-      "Welcome " + cookies.username;
-    loadAccounts();
-  } else window.location.href = "./register.html";
+      "Welcome " + cookies.username; // Mostrar nombre de usuario en la bienvenida
+    loadAccounts(); // Cargar cuentas
+  } else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
 }
 
-function applyThemeFromCookie() {
-  const cookies = getCookieObject();
-  if (cookies.theme === "light") {
+function applyThemeFromCookie() { // Aplicar tema
+  const cookies = getCookieObject(); // Conseguir modo desde las cookies
+  if (cookies.theme === "light") { // Modo claro
     document.body.classList.remove("dark-mode");
     document.getElementById("top-header").classList.remove("dark-mode");
     document.getElementById("addAccountButton").classList.remove("dark-mode");
@@ -210,7 +211,7 @@ function applyThemeFromCookie() {
       element.classList.remove("dark-mode");
     });
     document.getElementById("mode-select").value = 1;
-  } else if (cookies.theme === "dark") {
+  } else if (cookies.theme === "dark") { // Modo oscuro
     document.body.classList.add("dark-mode");
     document.getElementById("top-header").classList.add("dark-mode");
     document.getElementById("addAccountButton").classList.add("dark-mode");
@@ -222,11 +223,9 @@ function applyThemeFromCookie() {
   }
 }
 
-function flushCookies() {
-  // Get all cookies
+function flushCookies() { // Eliminar cookies
   let cookies = document.cookie.split(";");
 
-  // Loop through all cookies and delete them
   cookies.forEach(function (cookie) {
     let cookieName = cookie.split("=")[0].trim();
     document.cookie =
@@ -237,7 +236,7 @@ function flushCookies() {
   window.location.href = "main.html";
 }
 
-document
+document // Añadir cuenta
   .getElementById("addAccountForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -273,33 +272,29 @@ document
         }
       );
 
-      // Log the response text for debugging purposes
       const responseText = await response.text();
-
       if (!response.ok) {
-        // If response is not OK (status not 2xx)
         let errorData;
         try {
-          errorData = JSON.parse(responseText); // Try parsing as JSON
+          errorData = JSON.parse(responseText);
         } catch (e) {
-          errorData = { message: responseText }; // Fallback to text if it's not JSON
+          errorData = { message: responseText };
         }
         document.getElementById("info").innerHTML = errorData.message;
       } else {
         let result;
         try {
-          result = JSON.parse(responseText); // Try parsing as JSON
+          result = JSON.parse(responseText);
         } catch (e) {
-          result = { message: responseText }; // Fallback to text if it's not JSON
+          result = { message: responseText };
         }
         document.getElementById("info").innerHTML = result.message;
       }
     } catch (err) {
       document.getElementById("info").innerHTML = "Error adding account";
     }
-    loadAccounts();
+    loadAccounts(); // Recargar cuentas
   });
 
-// Run it as soon as possible
-document.addEventListener("DOMContentLoaded", loadCookies);
-applyThemeFromCookie();
+document.addEventListener("DOMContentLoaded", loadCookies); // Cargar cookies al cargar el DOM
+applyThemeFromCookie(); // Aplicar tema

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -10,33 +10,37 @@
 </head>
 
 <body>
-  <header id="top-header">
-    <div class="top-left"><input id="header-img" type="image" src="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg" onclick="window.location='./main.html'"></div>
-    <div class="top-center"><h1 id="title">Lizard Password Manager</h1></div>
-    <div class="top-right"><input id="user-button" type="image" src="https://cdn-icons-png.flaticon.com/512/61/61205.png" onclick="window.location='./login.html'"></button></div>
+  <header id="top-header"> <!-- Barra al tope de la pantalla -->
+    <div class="top-left"><input id="header-img" type="image"
+        src="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg"
+        onclick="window.location='./main.html'"></div>
+    <div class="top-center">
+      <h1 id="title">Lizard Password Manager</h1>
+    </div>
+    <div class="top-right"><input id="user-button" type="image"
+        src="https://cdn-icons-png.flaticon.com/512/61/61205.png" onclick="window.location='./login.html'"></div>
   </header>
 
-  <h1 id="welcome-text">Welcome</h1>
+  <h1 id="welcome-text">Welcome</h1> <!-- Texto de bienvenida -->
 
   <div class="container">
-    <select id="mode-select" onchange="reloadPage()">
+    <select id="mode-select" onchange="reloadPage()"> <!-- Selección de tema oscuro/claro -->
       <option value="1">Light Mode</option>
       <option value="2">Dark Mode</option>
     </select>
-    <button id="logout" onclick="flushCookies()">Logout</button>
+    <button id="logout" onclick="flushCookies()">Logout</button> <!-- Botón de cerrar sesión -->
   </div>
 
-
   <div id="accounts">
-  <ol id="accounts-list"></ol>
-  <form id="master-password-unlock">
-  <label for="master-password">Enter Master Password:</label>
-  <input type="password" id="master-password" required>
-  </form>
-  <div>
+    <ol id="accounts-list"></ol> <!-- Lista de cuentas del usuario -->
+    <form id="master-password-unlock"> <!-- Formulario de ingreso de contraseña maestra -->
+      <label for="master-password">Enter Master Password:</label>
+      <input type="password" id="master-password" required>
+    </form>
+  </div>
   <br>
-  <h1 id="info"></h1>
-  <form id="addAccountForm">
+  <h1 id="info"></h1> <!-- Texto para mostrar mensajes de las acciones del usuario -->
+  <form id="addAccountForm"> <!-- Formulario de añadir cuenta -->
     <label for="site">Site:</label>
     <input id="site" type="text" name="site" placeholder="Website" required><br><br>
     <label for="username">Username:</label>
@@ -47,7 +51,7 @@
   </form>
   <h1 id="result"></h1>
 
-  <script src="js/main.js" defer></script>
+  <script src="js/main.js" defer></script> <!-- Script de la página principal-->
 </body>
 
 </html>

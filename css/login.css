@@ -94,3 +94,34 @@ a {
     margin-top: 10px;
     text-align: center;
 }
+
+@media (max-width: 1100px) {
+    #title {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    header {
+        height: 60px;
+    }
+    
+    .top-center {
+        width: 700px;
+    }
+
+    #header-img {
+        display: none;
+    }
+    
+    #loginForm {
+        font-size: 32px;
+        padding-top: 30px;
+        width: 300px;
+        text-align: center;
+    }
+
+    #user-button {
+        display: none;
+    }
+}
+  

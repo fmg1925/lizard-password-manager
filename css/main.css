@@ -131,3 +131,35 @@ li, label, input {
     text-align: center;
     margin-bottom: 20px;
 }
+
+@media (max-width: 1100px) {
+    #title {
+        font-size: 32px;
+    }
+    .top-center {
+        width: 700px;
+    }
+    #welcome-text {
+        margin-left: 10px;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 700px) {
+    #title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 550px) {
+    #title {
+        font-size: 32px;
+    }
+    #header-img {
+        display: none;
+    }
+
+    #user-button {
+        display: none;
+    }
+}

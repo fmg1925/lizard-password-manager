@@ -216,6 +216,45 @@ app.post("/decrypt", async (req, res) => { // Desencriptar contraseña
   }
 });
 
+app.post("/change-password", async (req, res) => { // Cambiar contraseña maestra
+  const { username, currentMasterPassword, newMasterPassword } = req.body;
+
+  try {
+    const [rows] = await query("CALL getUserCredentials(?)", [username]); // Conseguir usuario
+    const user = rows[0];
+
+    if (!await bcrypt.compare(currentMasterPassword, user.password)) {
+      return res.status(400).json({ message: "Incorrect master password." });
+    }
+
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(newMasterPassword, saltRounds); // Encriptar nueva contraseña
+
+    const [userAccounts] = await query("CALL getUserAccounts(?)", [username]);
+
+    for (const account of userAccounts) {
+      const decryptedPassword = decrypt(account.account_password, currentMasterPassword); // Reencriptar todas las contraseñas con la nueva contraseña maestra
+      const reEncryptedPassword = encrypt(decryptedPassword, newMasterPassword);
+
+      await query("CALL editAccount(?, ?, ?, ?, ?, ?, ?)", [
+        account.account_name,
+        account.account_password,
+        account.account_username,
+        user.user_id,
+        account.account_name,
+        reEncryptedPassword,
+        account.account_username,
+      ]);
+    }
+    await query("CALL changeUserPassword(?, ?)", [user.user_id, hashedPassword]); // Cambiar la contraseña maestra del usuario
+
+    res.json({ message: "Password changed successfully." });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+});
+
 function getKeyFromPassword(password) { // Conseguir key para encripción
   return crypto.pbkdf2Sync(password, SALT, 100000, 32, 'sha256');
 }

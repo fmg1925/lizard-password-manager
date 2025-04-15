@@ -84,7 +84,7 @@ async function loadAccounts() {
                 "Incorrect master password");
             }
             showPasswordButton.style.display = "none";
-            listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, password: ${decryptedPassword}`;
+            listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, Password: ${decryptedPassword}`;
           });
 
           editAccountButton.addEventListener("click", async () => {
@@ -326,7 +326,7 @@ document // Añadir cuenta
     loadAccounts(); // Recargar cuentas
   });
 
-function generatePassword() {
+function generatePassword() { // Generar contraseña
   const length = parseInt(document.getElementById("password-length-textbox").value);
   const includeLetters = document.getElementById("password-letters").checked;
   const includeNumbers = document.getElementById("password-numbers").checked;
@@ -358,17 +358,48 @@ function generatePassword() {
   ).value = password;
 }
 
-function copyPassword()
+function copyPassword() // Copiar contraseña al portapapeles
 {
   var copyText = document.getElementById("generated-password");
 
-  // Select the text field
   copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
+  copyText.setSelectionRange(0, 99999);
 
-   // Copy the text inside the text field
   navigator.clipboard.writeText(copyText.value);
 }
+
+document.getElementById("change-password-form") // Cambio de contraseña maestra
+  .addEventListener('submit', async function(e)
+{
+  e.preventDefault();
+    const cookies = getCookieObject();
+    const username = cookies.username;
+    const currentMasterPassword = document.getElementById("current-master-password-textbox").value;
+    const newMasterPassword = document.getElementById("new-master-password-textbox").value;
+
+    if (!currentMasterPassword) {
+      return (document.getElementById("info").innerHTML = "Please enter your current master password");
+    }
+    if (!newMasterPassword) {
+      return (document.getElementById("info").innerHTML = "Please enter your new master password");
+    }
+
+    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/change-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, currentMasterPassword, newMasterPassword }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      return (document.getElementById("info").innerHTML = err.message);
+    } else {
+      document.getElementById("info").innerHTML = "Password changed successfully";
+      return location.reload();
+    }
+});
 
 document.addEventListener("DOMContentLoaded", loadCookies); // Cargar cookies al cargar el DOM
 applyThemeFromCookie(); // Aplicar tema

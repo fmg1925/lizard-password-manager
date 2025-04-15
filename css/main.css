@@ -93,6 +93,8 @@ button.dark-mode, select.dark-mode {
 .container button, .container select {
     font-size: 20px;
     margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 
@@ -120,7 +122,7 @@ li, label, input {
     border: none;
     font-size: 20px;
     border-radius: 2px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #addAccountButton.dark-mode { /* Tema oscuro */
@@ -157,8 +159,8 @@ li, label, input {
     width: 400px;
     height: 30px;
     font-size: 16px;
-    margin-bottom: 20px;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 #copy-icon, #regenerate-icon {
@@ -168,10 +170,16 @@ li, label, input {
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
+    margin-top: 5px;
 }
 
 #regenerate-icon {
     right: 40px;
+}
+
+.checkbox-group {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #password-length-textbox {
@@ -187,6 +195,19 @@ li, label, input {
 
 #password-div h2 {
     margin-top: 10px;
+}
+
+#change-password-form {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#change-password-form h1 {
+    margin-bottom: 10px;
+}
+
+#change-password-button {
+    margin-bottom: 20px;
 }
 
 @media (max-width: 1100px) { /* Ancho 1100 píxeles */
@@ -221,5 +242,9 @@ li, label, input {
 
     #user-button {
         display: none;
+    }
+    body {
+        display: inline-block;
+        text-align: center;
     }
 }

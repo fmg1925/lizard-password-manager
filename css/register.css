@@ -125,4 +125,13 @@ a {
         display: none;
     }
 }
-  
+
+@media (max-width: 550px) {
+    #title {
+        margin-right: 30px;
+    }
+    
+    #registerForm {
+        margin-left: 60px;
+    }
+}

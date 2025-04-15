@@ -116,13 +116,6 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `getUserIdAndPassword`(IN input_username VARCHAR(255))
-BEGIN
-	SELECT user_id, password FROM users WHERE username = input_username;
-END$$
-DELIMITER ;
-
-DELIMITER $$
 CREATE PROCEDURE `getUsers`()
 BEGIN
 	SELECT * FROM users;
@@ -133,5 +126,13 @@ DELIMITER $$
 CREATE PROCEDURE `register`(IN username VARCHAR(255), IN password VARCHAR(255))
 BEGIN
 	INSERT INTO users (username, password) VALUES (username, password);
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `changeUserPassword`(IN in_user_id INT, IN in_password VARCHAR(255))
+BEGIN
+	UPDATE users 
+    SET password = in_password WHERE user_id = in_user_id;
 END$$
 DELIMITER ;

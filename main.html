@@ -42,11 +42,11 @@
   <h1 id="info"></h1> <!-- Texto para mostrar mensajes de las acciones del usuario -->
   <form id="addAccountForm"> <!-- Formulario de añadir cuenta -->
     <label for="site">Site:</label>
-    <input id="site" type="text" name="site" placeholder="Website" required><br><br>
+    <input id="site" type="text" name="site" placeholder="Website" maxlength="255" required><br><br>
     <label for="username">Username:</label>
-    <input id="username" type="text" name="username" placeholder="Username" required><br><br>
+    <input id="username" type="text" name="username" placeholder="Username" maxlength="255" required><br><br>
     <label for="password">Password:</label>
-    <input id="password" type="password" name="password" placeholder="Password" required><br><br>
+    <input id="password" type="password" name="password" placeholder="Password" maxlength="255" required><br><br>
     <button id="addAccountButton" type="submit">Add Account</button>
   </form>
   <h1 id="result"></h1>
@@ -55,8 +55,8 @@
   <form id="password-generator">
     <div id="textbox-wrapper">
     <img id="regenerate-icon" src="https://static-00.iconduck.com/assets.00/refresh-icon-2048x2048-8i52zgsv.png" width="20px" onclick="generatePassword()">
-    <img id="copy-icon" src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png" width="10px" onclick="">
-    <input id="generated-password" type="text" value="" readonly><br>
+    <img id="copy-icon" src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png" width="10px" onclick="copyPassword()">
+    <input id="generated-password" type="text" readonly><br>
     </div>
     <label>
       <br><input id="password-letters" type="checkbox" name="password-letters" checked onchange="generatePassword()">Letters

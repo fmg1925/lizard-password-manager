@@ -50,7 +50,24 @@
     <button id="addAccountButton" type="submit">Add Account</button>
   </form>
   <h1 id="result"></h1>
-
+  
+  <h1 id="password-generator-text">Password Generator</h1>
+  <form id="password-generator">
+    <div id="textbox-wrapper">
+    <img id="regenerate-icon" src="https://static-00.iconduck.com/assets.00/refresh-icon-2048x2048-8i52zgsv.png" width="20px" onclick="generatePassword()">
+    <img id="copy-icon" src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png" width="10px" onclick="">
+    <input id="generated-password" type="text" value="" readonly><br>
+    </div>
+    <label>
+      <br><input id="password-letters" type="checkbox" name="password-letters" checked onchange="generatePassword()">Letters
+      <input id="password-numbers" type="checkbox" name="password-numbers" checked onchange="generatePassword()">Numbers
+      <input id="password-symbols" type="checkbox" name="password-symbols" checked onchange="generatePassword()">Symbols<br>
+    </label>
+    <div id="password-div">
+    <h2>Password Length</h2>
+    <input id="password-length-textbox" type="number" name="password-length" min="12" max="32" value="16" onchange="generatePassword()" onkeydown="return false;">
+    </div>
+  </form>
   <script src="js/main.js" defer></script> <!-- Script de la página principal-->
 </body>
 

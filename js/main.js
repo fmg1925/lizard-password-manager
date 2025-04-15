@@ -1,6 +1,7 @@
 const PORT = 3000; // Puerto Node
 
-function reloadPage() { // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
+function reloadPage() {
+  // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
   const lightmode = document.getElementById("mode-select");
   let mode = lightmode.value == 1 ? "light" : "dark";
   const days = 7;
@@ -11,13 +12,15 @@ function reloadPage() { // Al cambiar el tema, recargar la página y cambiar el 
   location.reload();
 }
 
-function getCookieObject() { // Conseguir cookies
+function getCookieObject() {
+  // Conseguir cookies
   return Object.fromEntries(
     document.cookie.split("; ").map((cookie) => cookie.split("="))
   );
 }
 
-async function loadAccounts() { // Cargar cuentas
+async function loadAccounts() {
+  // Cargar cuentas
   const cookies = getCookieObject();
 
   if (!cookies.username) {
@@ -62,12 +65,13 @@ async function loadAccounts() { // Cargar cuentas
             deleteAccountButton.classList.add("dark-mode");
 
           // Attach event listener to the button
-          showPasswordButton.addEventListener("click", async () => { // Mostrar contraseña
+          showPasswordButton.addEventListener("click", async () => {
+            // Mostrar contraseña
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              return document.getElementById("info").innerHTML =
-                "Please enter your master password";
+              return (document.getElementById("info").innerHTML =
+                "Please enter your master password");
             }
 
             let account_password = account.account_password;
@@ -83,7 +87,8 @@ async function loadAccounts() { // Cargar cuentas
             listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, password: ${decryptedPassword}`;
           });
 
-          editAccountButton.addEventListener("click", async () => { // Editar cuenta
+          editAccountButton.addEventListener("click", async () => {
+            // Editar cuenta
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
@@ -92,12 +97,18 @@ async function loadAccounts() { // Cargar cuentas
               return;
             }
 
-            newAccountName = document.getElementById('site').value;
-            if(!newAccountName) return document.getElementById("info").innerHTML = "Please enter the site name.";
-            newAccountUsername = document.getElementById('username').value;
-            if(!newAccountUsername) return document.getElementById("info").innerHTML = "Please enter the account username.";
-            newAccountPassword = document.getElementById('password').value;
-            if(!newAccountPassword) return document.getElementById("info").innerHTML = "Please enter the account password.";
+            newAccountName = document.getElementById("site").value;
+            if (!newAccountName)
+              return (document.getElementById("info").innerHTML =
+                "Please enter the site name.");
+            newAccountUsername = document.getElementById("username").value;
+            if (!newAccountUsername)
+              return (document.getElementById("info").innerHTML =
+                "Please enter the account username.");
+            newAccountPassword = document.getElementById("password").value;
+            if (!newAccountPassword)
+              return (document.getElementById("info").innerHTML =
+                "Please enter the account password.");
             const response = await fetch(
               `${window.location.protocol}//${window.location.hostname}:${PORT}/editAccount`,
               {
@@ -110,18 +121,25 @@ async function loadAccounts() { // Cargar cuentas
                   old_account_password: account.account_password,
                   old_account_username: account.account_username,
                   masterPassword: masterPassword,
-                  account_name : newAccountName,
+                  account_name: newAccountName,
                   account_password: newAccountPassword,
                   account_username: newAccountUsername,
                   user_id: account.user_id,
-                }), 
+                }),
               }
             );
-            if(response.ok) { document.getElementById("info").innerHTML = "Account modified succesfully"; return window.reloadPage(); }
-            else {return document.getElementById("info").innerHTML = "Incorrect master password";}
+            if (response.ok) {
+              document.getElementById("info").innerHTML =
+                "Account modified succesfully";
+              return window.reloadPage();
+            } else {
+              return (document.getElementById("info").innerHTML =
+                "Incorrect master password");
+            }
           });
 
-          deleteAccountButton.addEventListener("click", async () => { // Eliminar cuenta
+          deleteAccountButton.addEventListener("click", async () => {
+            // Eliminar cuenta
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
@@ -142,11 +160,17 @@ async function loadAccounts() { // Cargar cuentas
                   account_password: account.account_password,
                   account_username: account.account_username,
                   user_id: account.user_id,
-                }), 
+                }),
               }
             );
-            if(response.ok) { document.getElementById("info").innerHTML = "Account deleted succesfully"; return window.reloadPage(); }
-            else {return document.getElementById("info").innerHTML = "Incorrect master password";}
+            if (response.ok) {
+              document.getElementById("info").innerHTML =
+                "Account deleted succesfully";
+              return window.reloadPage();
+            } else {
+              return (document.getElementById("info").innerHTML =
+                "Incorrect master password");
+            }
           });
 
           listItem.appendChild(showPasswordButton);
@@ -164,7 +188,8 @@ async function loadAccounts() { // Cargar cuentas
     });
 }
 
-async function decrypt(account_password, masterPassword) { // Desencriptar contraseña
+async function decrypt(account_password, masterPassword) {
+  // Desencriptar contraseña
   try {
     const response = await fetch(
       `${window.location.protocol}//${window.location.hostname}:${PORT}/decrypt`,
@@ -190,19 +215,22 @@ async function decrypt(account_password, masterPassword) { // Desencriptar contr
   }
 }
 
-function loadCookies() { // Cargar cookies
+function loadCookies() {
+  // Cargar cookies
   const cookies = getCookieObject();
 
-  if (cookies.username) { 
+  if (cookies.username) {
     document.getElementById("welcome-text").innerHTML =
       "Welcome " + cookies.username; // Mostrar nombre de usuario en la bienvenida
     loadAccounts(); // Cargar cuentas
   } else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
 }
 
-function applyThemeFromCookie() { // Aplicar tema
+function applyThemeFromCookie() {
+  // Aplicar tema
   const cookies = getCookieObject(); // Conseguir modo desde las cookies
-  if (cookies.theme === "light") { // Modo claro
+  if (cookies.theme === "light") {
+    // Modo claro
     document.body.classList.remove("dark-mode");
     document.getElementById("top-header").classList.remove("dark-mode");
     document.getElementById("addAccountButton").classList.remove("dark-mode");
@@ -211,7 +239,8 @@ function applyThemeFromCookie() { // Aplicar tema
       element.classList.remove("dark-mode");
     });
     document.getElementById("mode-select").value = 1;
-  } else if (cookies.theme === "dark") { // Modo oscuro
+  } else if (cookies.theme === "dark") {
+    // Modo oscuro
     document.body.classList.add("dark-mode");
     document.getElementById("top-header").classList.add("dark-mode");
     document.getElementById("addAccountButton").classList.add("dark-mode");
@@ -223,7 +252,8 @@ function applyThemeFromCookie() { // Aplicar tema
   }
 }
 
-function flushCookies() { // Eliminar cookies
+function flushCookies() {
+  // Eliminar cookies
   let cookies = document.cookie.split(";");
 
   cookies.forEach(function (cookie) {
@@ -295,6 +325,38 @@ document // Añadir cuenta
     }
     loadAccounts(); // Recargar cuentas
   });
+
+function generatePassword() {
+  const length = parseInt(document.getElementById("password-length-textbox").value);
+  const includeLetters = document.getElementById("password-letters").checked;
+  const includeNumbers = document.getElementById("password-numbers").checked;
+  const includeSymbols = document.getElementById("password-symbols").checked;
+
+  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+  let charset = "";
+  if (includeLetters) charset += letters;
+  if (includeNumbers) charset += numbers;
+  if (includeSymbols) charset += symbols;
+
+  if (charset === "") {
+    document.getElementById("generated-password").value =
+      "Please select at least one character type.";
+    return;
+  }
+
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+
+  document.getElementById(
+    "generated-password"
+  ).value = password;
+}
 
 document.addEventListener("DOMContentLoaded", loadCookies); // Cargar cookies al cargar el DOM
 applyThemeFromCookie(); // Aplicar tema

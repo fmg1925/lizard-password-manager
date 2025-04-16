@@ -11,4 +11,17 @@ Sin límite de cuentas por usuario.\
 Información privada almacenada en .env\
 Configuración adaptable desde el .env
 
+**Cómo instalar:**
 
+Descargar el repositorio:\
+git clone https://github.com/fmg1925/lizard-password-manager.git
+
+Instalar:\
+cd lizard-password-manager\
+npm i\
+Ejecutar las consultas en MySQL
+
+Uso:\
+node /js/backend.js
+
+  

@@ -5,6 +5,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+
+    if(password.length < 16) return document.getElementById("info").innerHTML = "Password must be 16 characters minimum";
   
     try {
       const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/register`, { // Registrar usuario

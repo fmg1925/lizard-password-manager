@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="icon" type="image/jpg" href="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg">
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+  <header> <!-- Barra al tope de la pantalla -->
+    <div class="top-left"><input id="header-img" type="image" src="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg" onclick="window.location='./main.html'"></div>
+    <div class="top-center">
+      <h1 id="title">Lizard Password Manager</h1>
+    </div>
+    <div class="top-right"><input id="user-button" type="image" src="https://cdn-icons-png.flaticon.com/512/61/61205.png"></div>
+  </header>
+  <h1 id="info"></h1> <!-- Texto para mostrar mensajes de las acciones del usuario -->
+  <form id="registerForm"> <!-- Formulario de registro -->
+    <label for="username">Username:</label>
+    <input id="username" type="text" name="username" placeholder="Username" maxlength="255" required><br><br>
+    <label for="password">Password:</label>
+    <input id="password" type="password" name="password" placeholder="Master Password" maxlength="255" required><br><br>
+    <button id="register-button" type="submit">Register</button>
+    <a href="login.html">Login?</a>
+  </form>
+  <script src="register.js" defer></script> <!-- Script de página de registro -->
+</body>
+
+</html>

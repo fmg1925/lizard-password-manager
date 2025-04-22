@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, green, lime); /* Tema reptiliano */
+}
+
+header {
+    position: relative;
+    font-size: 20px;
+    width: 100%;
+    height:80px;
+    background-color: lime; /* Tema reptiliano */
+}
+
+#title {
+    text-align: center;
+}
+
+.top-left, .top-right, .top-center {
+    position: absolute;
+    top: 0;
+    padding: 10px;
+}
+
+.top-left {
+    left: 0;
+    padding: 12px;
+}
+
+.top-center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.top-right {
+    right: 0;
+    padding: 15px;
+}
+
+#header-img {
+    width: 100px;
+    height: auto;
+}
+
+.top-right input {
+    width: 50px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+#registerForm {
+    font-size: 32px;
+    padding-top: 30px;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#registerForm label {
+    font-size: 24px;
+}
+
+#registerForm input {
+    height: 30px;
+    font-size: 20px;
+    padding-left: 5px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+#register-button {
+    font-size: 24px;
+    padding: 5px;
+    padding-top: 3px;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 3px;
+}
+
+a {
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+#info {
+    margin-top: 10px;
+    text-align: center;
+}
+
+@media (max-width: 1100px) { /* Ancho 1100 píxeles */
+    /* Ajustar título, altura de la barra al tope, ocultar imagen del sitio, ajustar tamaño del formulario, ocultar botón de usuario */  
+    #title {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    header {
+        height: 60px;
+    }
+    
+    .top-center {
+        width: 700px;
+    }
+
+    #header-img {
+        display: none;
+    }
+    
+    #registerForm {
+        font-size: 32px;
+        padding-top: 30px;
+        width: 300px;
+        text-align: center;
+    }
+
+    #user-button {
+        display: none;
+    }
+}
+
+@media (max-width: 550px) {
+    #title {
+        margin-right: 30px;
+    }
+    
+    #registerForm {
+        margin-left: 60px;
+    }
+}

@@ -130,7 +130,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `changeUserPassword`(IN in_user_id INT, IN in_password VARCHAR(255))
+CREATE PROCEDURE `changeUserPassword`(IN in_user_id INT, IN in_password VARCHAR(255))
 BEGIN
 	UPDATE users 
     SET password = in_password WHERE user_id = in_user_id;

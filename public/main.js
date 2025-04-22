@@ -1,12 +1,13 @@
 function reloadPage() {
   // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
   const lightmode = document.getElementById("mode-select");
-  let mode = lightmode.value == 1 ? "light" : "dark";
+  let mode = lightmode.value == 0 ? "light" : "dark";
   const days = 7;
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();
   document.cookie = `theme=${mode}; ${expires}; path=/; samesite=Strict`;
+  localStorage.setItem("DarkMode", mode)
   location.reload();
 }
 
@@ -221,13 +222,28 @@ function loadCookies() {
     document.getElementById("welcome-text").innerHTML =
       "Welcome " + cookies.username; // Mostrar nombre de usuario en la bienvenida
     loadAccounts(); // Cargar cuentas
-  } else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
+  } //else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
 }
 
 function applyThemeFromCookie() {
   // Aplicar tema
-  const cookies = getCookieObject(); // Conseguir modo desde las cookies
-  if (cookies.theme === "light") {
+  const cookies = getCookieObject(); // Get cookies
+  const tema = localStorage.getItem("DarkMode"); // LocalStorage
+  let theme = false; // Default value
+
+ if (tema !== null) {
+   theme = tema === "light" ? false : true; // Convierte string a boolean
+ }
+ else if (cookies.theme !== undefined) {
+   cookies.theme == "light" ? (theme = false) : (theme = true);
+   localStorage.setItem("DarkMode", cookies.theme);
+ }
+
+  console.log(cookies.theme);
+  console.log(tema);
+  console.log(theme);
+
+  if (theme == false) {
     // Modo claro
     document.body.classList.remove("dark-mode");
     document.getElementById("top-header").classList.remove("dark-mode");
@@ -236,8 +252,8 @@ function applyThemeFromCookie() {
     document.querySelectorAll("button, select").forEach((element) => {
       element.classList.remove("dark-mode");
     });
-    document.getElementById("mode-select").value = 1;
-  } else if (cookies.theme === "dark") {
+    document.getElementById("mode-select").value = 0;
+  } else if (theme == true) {
     // Modo oscuro
     document.body.classList.add("dark-mode");
     document.getElementById("top-header").classList.add("dark-mode");
@@ -246,7 +262,7 @@ function applyThemeFromCookie() {
     document.querySelectorAll("button, select").forEach((element) => {
       element.classList.add("dark-mode");
     });
-    document.getElementById("mode-select").value = 2;
+    document.getElementById("mode-select").value = 1;
   }
 }
 
@@ -260,6 +276,7 @@ function flushCookies() {
       cookieName +
       "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/; samesite=Strict";
   });
+  localStorage.clear();
 
   window.location.href = "main.html";
 }

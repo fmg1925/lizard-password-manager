@@ -47,7 +47,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
 function cargarTema() {
   const tema = localStorage.getItem("DarkMode");
   const selectdark = document.getElementById('mode-select');
-  if(tema == "true") {
+  if(tema == "dark") {
     selectdark.value = 2;
   }
   reloadPage();
@@ -58,10 +58,10 @@ function cargarTema() {
   DM = selectdark.value;
   let header = document.getElementById("Header");
   let Ubutt = document.getElementById("user-button");
-  let SelButt = document.querySelectorAll("select, button")
+  let SelButt = document.querySelectorAll("select, button, input")
   if (DM == 1){
             localStorage.setItem(
-              "DarkMode", false
+              "DarkMode", 'light'
             )
             document.body.classList.remove("dark-mode");
             header.classList.remove("dark-mode");
@@ -72,7 +72,7 @@ function cargarTema() {
           }
           else{
             localStorage.setItem(
-              "DarkMode", true
+              "DarkMode", 'dark'
             )
             document.body.classList.add("dark-mode");
             header.classList.add("dark-mode");

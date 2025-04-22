@@ -25,6 +25,15 @@ button, select {
     background: rgba(0, 0, 0, 0.1);
 }
 
+.container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container select {
+    margin-right: 10px;
+}
+
 body.dark-mode { /* Tema oscuro */
     background: #121212;
     color: white;
@@ -42,8 +51,13 @@ button.dark-mode, select.dark-mode {
     color: white;
     background: rgba(255, 255, 255, 0.1);
 }
+
 #user-button.dark-mode { /* Tema oscuro */
     filter: contrast(1%); /* Aplicar contraste a la imagen (cambia a un color más claro) */
+}
+
+input.dark-mode {
+    color: white;
 }
 
 .top-left, .top-right, .top-center {

@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <header> <!-- Barra al tope de la pantalla -->
+  <header id="Header"> <!-- Barra al tope de la pantalla -->
     <div class="top-left"><input id="header-img" type="image" src="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg" onclick="window.location='./main.html'"></div>
     <div class="top-center">
       <h1 id="title">Lizard Password Manager</h1>
@@ -18,6 +18,12 @@
     <div class="top-right"><input id="user-button" type="image" src="https://cdn-icons-png.flaticon.com/512/61/61205.png"></div>
   </header>
   <h1 id="info"></h1> <!-- Texto para mostrar mensajes de las acciones del usuario -->
+  <div class="container"> <!-- Contenedor para cambiar a modo oscuro, Sin realizar login-->
+    <select id="mode-select" onchange="reloadPage()"> <!-- Selección de tema oscuro/claro -->
+      <option value="1">Light Mode</option>
+      <option value="2">Dark Mode</option>
+    </select>
+  </div>
   <form id="registerForm"> <!-- Formulario de registro -->
     <label for="username">Username:</label>
     <input id="username" type="text" name="username" placeholder="Username" maxlength="255" required><br><br>

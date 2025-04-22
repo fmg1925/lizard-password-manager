@@ -1,5 +1,3 @@
-const PORT = 443; // Puerto Node
-
 function reloadPage() {
   // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
   const lightmode = document.getElementById("mode-select");
@@ -30,7 +28,7 @@ async function loadAccounts() {
   fetch(
     `${window.location.protocol}//${
       window.location.hostname
-    }:${PORT}/accounts?username=${encodeURIComponent(cookies.username)}`,
+    }/accounts?username=${encodeURIComponent(cookies.username)}`,
     {
       method: "GET",
     }
@@ -110,7 +108,7 @@ async function loadAccounts() {
               return (document.getElementById("info").innerHTML =
                 "Please enter the account password.");
             const response = await fetch(
-              `${window.location.protocol}//${window.location.hostname}:${PORT}/editAccount`,
+              `${window.location.protocol}//${window.location.hostname}/editAccount`,
               {
                 method: "POST",
                 headers: {
@@ -148,7 +146,7 @@ async function loadAccounts() {
               return;
             }
             const response = await fetch(
-              `${window.location.protocol}//${window.location.hostname}:${PORT}/deleteAccount`,
+              `${window.location.protocol}//${window.location.hostname}/deleteAccount`,
               {
                 method: "POST",
                 headers: {
@@ -192,7 +190,7 @@ async function decrypt(account_password, masterPassword) {
   // Desencriptar contraseña
   try {
     const response = await fetch(
-      `${window.location.protocol}//${window.location.hostname}:${PORT}/decrypt`,
+      `${window.location.protocol}//${window.location.hostname}/decrypt`,
       {
         method: "POST",
         headers: {
@@ -286,7 +284,7 @@ document // Añadir cuenta
 
     try {
       const response = await fetch(
-        `${window.location.protocol}//${window.location.hostname}:${PORT}/add-account`,
+        `${window.location.protocol}//${window.location.hostname}/add-account`,
         {
           method: "POST",
           headers: {
@@ -384,7 +382,7 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
       return (document.getElementById("info").innerHTML = "Please enter your new master password");
     }
 
-    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/change-password`, {
+    const response = await fetch(`${window.location.protocol}//${window.location.hostname}/change-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

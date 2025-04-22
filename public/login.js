@@ -7,7 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/login`, { // Iniciar sesión
+    const response = await fetch(`${window.location.protocol}//${window.location.hostname}/login`, { // Iniciar sesión
       method: "POST",
       headers: {
         "Content-Type": "application/json",

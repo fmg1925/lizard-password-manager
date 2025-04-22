@@ -18,10 +18,32 @@ header {
     background-color: lime; /* Tema reptiliano */
 }
 
+body.dark-mode { /* Tema oscuro */
+    background: #121212;
+    color: white;
+  }
+
+header.dark-mode { /* Tema oscuro */
+    background-color: #121212;
+    color: white;
+}
+
 #title {
     text-align: center;
 }
-
+button.dark-mode, select.dark-mode {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+#user-button.dark-mode { /* Tema oscuro */
+    filter: contrast(1%); /* Aplicar contraste a la imagen (cambia a un color más claro) */
+}
+button, select {
+    font-size: 20px;
+    border: none;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.1);
+}
 .top-left, .top-right, .top-center {
     position: absolute;
     top: 0;

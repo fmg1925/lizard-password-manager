@@ -1,4 +1,4 @@
-const PORT = 443; // Puerto Node
+const PORT = 3000; // Puerto Node
 
 document.getElementById("registerForm").addEventListener("submit", async (e) => { // Formulario de registro
     e.preventDefault();

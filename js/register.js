@@ -1,5 +1,3 @@
-const PORT = 3000; // Puerto Node
-
 document.getElementById("registerForm").addEventListener("submit", async (e) => { // Formulario de registro
     e.preventDefault();
   
@@ -9,7 +7,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     if(password.length < 16) return document.getElementById("info").innerHTML = "Password must be 16 characters minimum";
   
     try {
-      const response = await fetch(`${window.location.protocol}//${window.location.hostname}:${PORT}/register`, { // Registrar usuario
+      const response = await fetch(`${window.location.protocol}//${window.location.hostname}/register`, { // Registrar usuario
         method: "POST",
         headers: {
           "Content-Type": "application/json",

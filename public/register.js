@@ -43,3 +43,45 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       document.getElementById("info").innerHTML = "Error registering account";
     }
   });
+  //Funciones para mantener y elegir el tema(oscuro y claro)
+function cargarTema() {
+  const tema = localStorage.getItem("DarkMode");
+  const selectdark = document.getElementById('mode-select');
+  if(tema == "true") {
+    selectdark.value = 2;
+  }
+  reloadPage();
+}
+
+ function reloadPage(){
+  const selectdark = document.getElementById('mode-select');
+  DM = selectdark.value;
+  let header = document.getElementById("Header");
+  let Ubutt = document.getElementById("user-button");
+  let SelButt = document.querySelectorAll("select, button")
+  if (DM == 1){
+            localStorage.setItem(
+              "DarkMode", false
+            )
+            document.body.classList.remove("dark-mode");
+            header.classList.remove("dark-mode");
+            Ubutt.classList.remove("dark-mode");
+            SelButt.forEach((element) => {
+            element.classList.remove("dark-mode");
+    });
+          }
+          else{
+            localStorage.setItem(
+              "DarkMode", true
+            )
+            document.body.classList.add("dark-mode");
+            header.classList.add("dark-mode");
+            Ubutt.classList.add("dark-mode");
+            SelButt.forEach((element) => {
+            element.classList.add ("dark-mode");;
+    });
+          }
+ }
+
+ document.addEventListener("DOMContentLoaded", cargarTema);
+ //Fin de las funciones para modificar el tema

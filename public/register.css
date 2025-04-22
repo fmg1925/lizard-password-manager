@@ -130,12 +130,13 @@ button {
     }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 400px) { /* Ancho 400 píxeles */
     #title {
-        margin-right: 30px;
+        margin-right: 0px;
     }
-    
+
     #registerForm {
-        margin-left: 60px;
+        max-width: 300px;
+        margin: 0 auto;
     }
 }

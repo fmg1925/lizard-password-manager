@@ -253,3 +253,36 @@ button, select {
         text-align: center;
     }
 }
+
+@media (max-width: 400px) { /* Ancho 400 píxeles */
+    #title {
+        font-size: 24px;
+    }
+    #header-img {
+        display: none;
+    }
+
+    #user-button {
+        display: none;
+    }
+    body {
+        display: inline-block;
+        text-align: center;
+    }
+
+    input {
+        font-size: 16px;
+    }
+
+    #generated-password {
+        font-size: 16px;
+        width: 300px;
+    }
+    #welcome-text {
+        margin-left: 0px;
+    }
+
+    .container {
+        display: block;
+    }
+}

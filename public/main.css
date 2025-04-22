@@ -171,6 +171,7 @@ li, label, input {
     width: 20px;
     height: 20px;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 #regenerate-icon {
@@ -208,6 +209,10 @@ li, label, input {
 
 #change-password-button {
     margin-bottom: 20px;
+}
+
+button, select {
+    cursor: pointer;
 }
 
 @media (max-width: 1100px) { /* Ancho 1100 píxeles */

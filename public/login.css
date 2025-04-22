@@ -95,6 +95,10 @@ a {
     text-align: center;
 }
 
+button {
+    cursor: pointer;
+}
+
 @media (max-width: 1100px) { /* Ancho 1100 píxeles */
     /* Ajustar título, altura de la barra al tope, ocultar imagen del sitio, ajustar tamaño del formulario, ocultar botón de usuario */  
     #title {

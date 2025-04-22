@@ -21,9 +21,18 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST'],  // Allow GET and POST requests
+  methods: ['GET', 'POST', 'OPTIONS'],  // Allow GET and POST requests
+  allowedHeaders: ['Content-Type'], // Allow content-type header
   credentials: true  // Allow credentials (cookies, headers, etc.)
 }));
+
+app.options('*', (req, res) => {
+  console.log('Received OPTIONS request');
+  res.header('Access-Control-Allow-Origin', 'https://lizard-password-manager.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.status(200).end();
+});
 
 // Serve static files (like HTML, CSS, JS) from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));  // Change 'public' to the folder where your HTML is
@@ -65,6 +74,10 @@ app.get("/get-users", (_req, res) => { // Conseguir lista de usuarios
 
 app.post("/register", async (req, res) => { // Registrar usuario
   const { username, password } = req.body;
+  console.log('Received OPTIONS request for /login');
+  res.header('Access-Control-Allow-Origin', 'https://lizard-password-manager.onrender.com');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
 
   const saltRounds = 12;
   const hashedPassword = await bcrypt.hash(password, saltRounds);

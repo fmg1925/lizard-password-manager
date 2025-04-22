@@ -20,25 +20,28 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'main.html'));  // Modify 'index.html' to match your file name
 });
 
-const db = mysql.createConnection({ // Crear conexión con los parámetros del .env
+const db = mysql.createPool({ // Crear conexión con los parámetros del .env
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 const ALGORITHM = process.env.ALGORITHM;
 const IV_LENGTH = 16;
 const SALT = process.env.SECRET_KEY;
 
-db.connect((err) => { // Conectar a la DB
-  if (err) {
-    console.error("DB connection error:", err);
-    return;
-  }
-  console.log("Connected to MySQL");
-});
+//db.connect((err) => { // Conectar a la DB
+//  if (err) {
+//    console.error("DB connection error:", err);
+//    return;
+//  }
+//  console.log("Connected to MySQL");
+//});
 
 app.get("/get-users", (_req, res) => { // Conseguir lista de usuarios
   db.query('CALL getUsers()', (err, results) => {

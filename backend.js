@@ -56,9 +56,23 @@ app.post("/register", async (req, res) => { // Registrar usuario
 
   db.query('CALL register(?, ?)', [username, hashedPassword], (err, _results) => {
     if (err) {
-      return res.status(409).json({ message: "Username already exists" });
+      console.error('Database error:', err);
+  
+      if (err.code === 'ER_DUP_ENTRY') {
+        // MySQL duplicate entry error
+        return res.status(409).json({ message: "Username already exists" });
+      } else if (err.code === 'ER_BAD_NULL_ERROR') {
+        // A required field was null
+        return res.status(400).json({ message: "Missing required fields" });
+      } else if (err.code === 'ER_PARSE_ERROR') {
+        // Syntax error in SQL or procedure
+        return res.status(500).json({ message: "Database syntax error" });
+      } else {
+        // Generic error
+        return res.status(500).json({ message: "Internal server error" });
+      }
     }
-
+  
     res.status(200).json({ message: "User inserted successfully" });
   });
 });
@@ -72,19 +86,23 @@ const query = (sql, values) => { // Método para query SQL
   });
 };
 
-app.post("/login", async (req, res) => { // Iniciar sesión
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
-  try {
-    const results = await query("CALL checkExistingUsername(?)", [
-      username,
-    ]);
+  if (!username || !password) {
+    return res.status(400).json({ message: "Username and password are required" });
+  }
 
-    if (results.length > 0) {
+  try {
+    const results = await query("CALL checkExistingUsername(?)", [username]);
+
+    // Stored procedures in MySQL return nested arrays
+    if (Array.isArray(results) && results.length > 0 && results[0].length > 0) {
       const user = results[0][0];
 
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
+          console.error("Bcrypt compare error:", err);
           return res.status(500).json({ message: "Error checking password" });
         }
 
@@ -99,9 +117,16 @@ app.post("/login", async (req, res) => { // Iniciar sesión
     }
 
   } catch (err) {
-    return res.status(500).json({ message: "Database error" });
+    console.error("Database error:", err);
+
+    if (err.code === 'ER_PARSE_ERROR') {
+      return res.status(500).json({ message: "Stored procedure syntax error" });
+    }
+
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 app.get('/accounts', (req, res) => { // Conseguir cuentas del usuario
   const username = req.query.username;

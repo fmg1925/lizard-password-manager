@@ -9,8 +9,21 @@ const crypto = require('crypto');
 const path = require('path');
 
 app.use(express.json()); // Web server
-app.use(cors()); // Usar cross origin requests
 app.use(cookieParser()); // Manejo de cookies
+
+const allowedOrigins = ['https://lizard-password-manager.onrender.com', 'http://localhost:3000', 'http://localhost:5500'];  // Add your frontend domain here
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],  // Allow GET and POST requests
+  credentials: true  // Allow credentials (cookies, headers, etc.)
+}));
 
 // Serve static files (like HTML, CSS, JS) from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));  // Change 'public' to the folder where your HTML is
@@ -20,28 +33,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'main.html'));  // Modify 'index.html' to match your file name
 });
 
-const db = mysql.createPool({ // Crear conexión con los parámetros del .env
+const db = mysql.createConnection({ // Crear conexión con los parámetros del .env
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  connectTimeout: 10000  // Set appropriate timeout
 });
 
 const ALGORITHM = process.env.ALGORITHM;
 const IV_LENGTH = 16;
 const SALT = process.env.SECRET_KEY;
 
-//db.connect((err) => { // Conectar a la DB
-//  if (err) {
-//    console.error("DB connection error:", err);
-//    return;
-//  }
-//  console.log("Connected to MySQL");
-//});
+db.connect((err) => { // Conectar a la DB
+  if (err) {
+    console.error("DB connection error:", err);
+    return;
+  }
+  console.log("Connected to MySQL");
+});
 
 app.get("/get-users", (_req, res) => { // Conseguir lista de usuarios
   db.query('CALL getUsers()', (err, results) => {

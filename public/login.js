@@ -22,7 +22,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
       } catch (e) {
         errorData = { message: responseText };
       }
-      document.getElementById("info").innerHTML = "Incorrect username or password";
+      document.getElementById("info").innerHTML =
+        "Incorrect username or password";
+
+      setTimeout(function () {
+        document.getElementById("info").innerHTML = "";
+      }, 3000); // 3000 milliseconds = 3 seconds
     } else {
       let result;
       try {
@@ -40,7 +45,14 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
     }
   } catch (err) {
     console.error("Error during login:", err);
-    document.getElementById("info").innerHTML = "Error encountered while logging in";
+    document.getElementById("info").innerHTML =
+      "Error encountered while logging in";
+    document.getElementById("info").innerHTML =
+      "Incorrect username or password";
+
+    setTimeout(function () {
+      document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
   }
 });
 //Funciones para mantener y elegir el tema(oscuro y claro)

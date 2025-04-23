@@ -69,6 +69,9 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Please enter your master password");
             }
@@ -79,6 +82,9 @@ async function loadAccounts() {
               masterPassword
             );
             if (decryptedPassword === "") {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Incorrect master password");
             }
@@ -93,21 +99,36 @@ async function loadAccounts() {
             if (!masterPassword) {
               document.getElementById("info").innerHTML =
                 "Please enter your master password";
+                setTimeout(function() {
+                  document.getElementById("info").innerHTML = "";
+              }, 3000); // 3000 milliseconds = 3 seconds
               return;
             }
 
             newAccountName = document.getElementById("site").value;
-            if (!newAccountName)
+            if (!newAccountName) {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Please enter the site name.");
+          }
             newAccountUsername = document.getElementById("username").value;
-            if (!newAccountUsername)
+            if (!newAccountUsername) {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Please enter the account username.");
+          }
             newAccountPassword = document.getElementById("password").value;
-            if (!newAccountPassword)
+            if (!newAccountPassword) {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Please enter the account password.");
+          }
             const response = await fetch(
               `${window.location.protocol}//${window.location.hostname}/editAccount`,
               {
@@ -132,6 +153,9 @@ async function loadAccounts() {
                 "Account modified succesfully";
               return window.reloadPage();
             } else {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Incorrect master password");
             }
@@ -142,6 +166,9 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               document.getElementById("info").innerHTML =
                 "Please enter your master password";
               return;
@@ -167,6 +194,9 @@ async function loadAccounts() {
                 "Account deleted succesfully";
               return window.reloadPage();
             } else {
+              setTimeout(function() {
+                document.getElementById("info").innerHTML = "";
+            }, 3000); // 3000 milliseconds = 3 seconds
               return (document.getElementById("info").innerHTML =
                 "Incorrect master password");
             }
@@ -222,7 +252,7 @@ function loadCookies() {
     document.getElementById("welcome-text").innerHTML =
       "Welcome " + cookies.username; // Mostrar nombre de usuario en la bienvenida
     loadAccounts(); // Cargar cuentas
-  } //else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
+  } else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
 }
 
 function applyThemeFromCookie() {
@@ -294,6 +324,9 @@ document // Añadir cuenta
 
     const masterPassword = document.getElementById("master-password").value;
     if (!masterPassword) {
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
       document.getElementById("info").innerHTML =
         "Please enter your master password";
       return;
@@ -326,6 +359,9 @@ document // Añadir cuenta
           errorData = { message: responseText };
         }
         document.getElementById("info").innerHTML = errorData.message;
+        setTimeout(function() {
+          document.getElementById("info").innerHTML = "";
+      }, 3000); // 3000 milliseconds = 3 seconds
       } else {
         let result;
         try {
@@ -334,9 +370,15 @@ document // Añadir cuenta
           result = { message: responseText };
         }
         document.getElementById("info").innerHTML = result.message;
+        setTimeout(function() {
+          document.getElementById("info").innerHTML = "";
+      }, 3000); // 3000 milliseconds = 3 seconds
       }
     } catch (err) {
       document.getElementById("info").innerHTML = "Error adding account";
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
     }
     loadAccounts(); // Recargar cuentas
   });
@@ -393,12 +435,18 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
     const newMasterPassword = document.getElementById("new-master-password-textbox").value;
 
     if (!currentMasterPassword) {
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
       return (document.getElementById("info").innerHTML = "Please enter your current master password");
     }
     if (!newMasterPassword) {
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
       return (document.getElementById("info").innerHTML = "Please enter your new master password");
     }
-
+    try {
     const response = await fetch(`${window.location.protocol}//${window.location.hostname}/change-password`, {
       method: "POST",
       headers: {
@@ -409,11 +457,20 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
 
     if (!response.ok) {
       const err = await response.json();
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
       return (document.getElementById("info").innerHTML = err.message);
     } else {
       document.getElementById("info").innerHTML = "Password changed successfully";
       return location.reload();
     }
+  } catch(err) {
+      setTimeout(function() {
+        document.getElementById("info").innerHTML = "";
+    }, 3000); // 3000 milliseconds = 3 seconds
+      return (document.getElementById("info").innerHTML = err.message);
+  }
 });
 
 document.addEventListener("DOMContentLoaded", loadCookies); // Cargar cookies al cargar el DOM

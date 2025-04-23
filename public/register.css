@@ -47,9 +47,15 @@ header.dark-mode { /* Tema oscuro */
 #title {
     text-align: center;
 }
+
 button.dark-mode, select.dark-mode {
     color: white;
     background: rgba(255, 255, 255, 0.1);
+}
+
+select.dark-mode:focus {
+    color: white;
+    background-color: black;
 }
 
 #user-button.dark-mode { /* Tema oscuro */

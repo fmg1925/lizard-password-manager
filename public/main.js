@@ -1,8 +1,14 @@
+let cooldownTimeoutId = null;
+
 function setInfoTextWithCooldown(text) {
   var infoText = document.getElementById("info");
   infoText.textContent = text;
-  setTimeout(function () {
+  if (cooldownTimeoutId !== null) {
+    clearTimeout(cooldownTimeoutId);
+  }
+  cooldownTimeoutId = setTimeout(() => {
     infoText.textContent = "";
+    cooldownTimeoutId = null; // Reset the timeout ID
   }, 3000);
 }
 
@@ -64,7 +70,7 @@ async function loadAccounts() {
           
           const cookies = getCookieObject(); // Aplicar tema oscuro a los nuevos botones
           
-          if (cookies.theme === "dark") {
+          if (cookies.theme === "dark" || localStorage.getItem("DarkMode") == 'dark') {
             showPasswordButton.classList.add("dark-mode");
             editAccountButton.classList.add("dark-mode");
             deleteAccountButton.classList.add("dark-mode");
@@ -316,8 +322,8 @@ document // Añadir cuenta
           result = JSON.parse(responseText);
         } catch (e) {
           result = { message: responseText };
+          return setInfoTextWithCooldown(result.message);
         }
-        setInfoTextWithCooldown(result.message);
       }
     } catch (err) {
       return setInfoTextWithCooldown("Error adding account");

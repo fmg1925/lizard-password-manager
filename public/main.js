@@ -242,15 +242,9 @@ function applyThemeFromCookie() {
    cookies.theme == "light" ? (theme = false) : (theme = true);
    localStorage.setItem("DarkMode", cookies.theme);
  }
-
-  if (theme == false) {
-    // Modo claro
-    document.querySelectorAll("button, select, header, body").forEach((element) => {
-      element.classList.remove("dark-mode");
-    });
-    document.getElementById("mode-select").value = 0;
-  } else if (theme == true) {
+  if(theme) {
     // Modo oscuro
+    document.getElementById('user-button').classList.add('dark-mode');
     document.querySelectorAll("button, select, header, body").forEach((element) => {
       element.classList.add("dark-mode");
     });
@@ -312,6 +306,7 @@ document // Añadir cuenta
         let errorData;
         try {
           errorData = JSON.parse(responseText);
+          return setInfoTextWithCooldown(errorData.message);
         } catch (e) {
           errorData = { message: responseText };
           return setInfoTextWithCooldown(errorData.message);
@@ -320,6 +315,7 @@ document // Añadir cuenta
         let result;
         try {
           result = JSON.parse(responseText);
+          setInfoTextWithCooldown(responseText.message);
         } catch (e) {
           result = { message: responseText };
           return setInfoTextWithCooldown(result.message);

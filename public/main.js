@@ -315,10 +315,9 @@ document // Añadir cuenta
         let result;
         try {
           result = JSON.parse(responseText);
-          setInfoTextWithCooldown(responseText.message);
+          setInfoTextWithCooldown(result.message);
         } catch (e) {
-          result = { message: responseText };
-          return setInfoTextWithCooldown(result.message);
+          return setInfoTextWithCooldown(responseText);
         }
       }
     } catch (err) {

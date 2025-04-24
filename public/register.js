@@ -1,20 +1,35 @@
-document.getElementById("registerForm").addEventListener("submit", async (e) => { // Formulario de registro
+function setInfoTextWithCooldown(text) {
+  var infoText = document.getElementById("info");
+  infoText.textContent = text;
+  setTimeout(function () {
+    infoText.textContent = "";
+  }, 3000);
+}
+
+document
+  .getElementById("registerForm")
+  .addEventListener("submit", async (e) => {
+    // Formulario de registro
     e.preventDefault();
-  
+
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    if(password.length < 16) return document.getElementById("info").innerHTML = "Password must be 16 characters minimum";
-  
+    if(password.length < 16) return setInfoTextWithCooldown("Passwords can't be less than 16 characters long");
+
     try {
-      const response = await fetch(`${window.location.protocol}//${window.location.hostname}/register`, { // Registrar usuario
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-  
+      const response = await fetch(
+        `${window.location.protocol}//${window.location.hostname}/register`,
+        {
+          // Registrar usuario
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
+
       const responseText = await response.text();
       if (!response.ok) {
         let errorData;
@@ -23,7 +38,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         } catch (e) {
           errorData = { message: responseText };
         }
-        document.getElementById("info").innerHTML = errorData.message;
+        infoText = errorData.message;
       } else {
         let result;
         try {
@@ -31,7 +46,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         } catch (e) {
           result = { message: responseText };
         }
-        document.getElementById("info").innerHTML = "User registered succesfully";
+        infoText =
+          "User registered succesfully";
         const days = 7;
         const date = new Date();
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -40,48 +56,35 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         window.location.href = "main.html"; // Redigir a la página principal
       }
     } catch (err) {
-      document.getElementById("info").innerHTML = "Error registering account";
+      setInfoTextWithCooldown("Error registering account");
     }
   });
-  //Funciones para mantener y elegir el tema(oscuro y claro)
+
+//Funciones para mantener y elegir el tema (oscuro y claro)
 function cargarTema() {
   const tema = localStorage.getItem("DarkMode");
-  const selectdark = document.getElementById('mode-select');
-  if(tema == "dark") {
-    selectdark.value = 2;
+  const selectdark = document.getElementById("mode-select");
+  if (tema == "dark") {
+    selectdark.value = 1;
   }
   reloadPage();
 }
 
- function reloadPage(){
-  const selectdark = document.getElementById('mode-select');
-  DM = selectdark.value;
-  let header = document.getElementById("Header");
-  let Ubutt = document.getElementById("user-button");
-  let SelButt = document.querySelectorAll("select, button, input")
-  if (DM == 1){
-            localStorage.setItem(
-              "DarkMode", 'light'
-            )
-            document.body.classList.remove("dark-mode");
-            header.classList.remove("dark-mode");
-            Ubutt.classList.remove("dark-mode");
-            SelButt.forEach((element) => {
-            element.classList.remove("dark-mode");
+function reloadPage() {
+  const darkMode = document.getElementById("mode-select").value;
+  let darkModeItems = document.querySelectorAll("select, button, input, header, body");
+  if (darkMode == 1) {
+    localStorage.setItem("DarkMode", "light");
+    darkModeItems.forEach((element) => {
+      element.classList.remove("dark-mode");
     });
-          }
-          else{
-            localStorage.setItem(
-              "DarkMode", 'dark'
-            )
-            document.body.classList.add("dark-mode");
-            header.classList.add("dark-mode");
-            Ubutt.classList.add("dark-mode");
-            SelButt.forEach((element) => {
-            element.classList.add ("dark-mode");;
+  } else {
+    localStorage.setItem("DarkMode", "dark");
+    darkModeItems.forEach((element) => {
+      element.classList.add("dark-mode");
     });
-          }
- }
+  }
+}
 
- document.addEventListener("DOMContentLoaded", cargarTema);
- //Fin de las funciones para modificar el tema
+document.addEventListener("DOMContentLoaded", cargarTema);
+//Fin de las funciones para modificar el tema

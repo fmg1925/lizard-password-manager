@@ -1,3 +1,11 @@
+function setInfoTextWithCooldown(text) {
+  var infoText = document.getElementById("info");
+  infoText.textContent = text;
+  setTimeout(function () {
+    infoText.textContent = "";
+  }, 3000);
+}
+
 function reloadPage() {
   // Al cambiar el tema, recargar la página y cambiar el tema en las cookies
   const lightmode = document.getElementById("mode-select");
@@ -23,7 +31,6 @@ async function loadAccounts() {
   const cookies = getCookieObject();
 
   if (!cookies.username) {
-    console.error("Username cookie is not set.");
     return;
   }
   fetch(
@@ -37,8 +44,7 @@ async function loadAccounts() {
     .then((response) => response.json())
     .then((data) => {
       if (data.length === 0)
-        return (document.getElementById("info").innerHTML =
-          "You have no accounts registered");
+        return setInfoTextWithCooldown("You have no accounts registered");
       const accountsList = document.getElementById("accounts-list");
       accountsList.innerHTML = ""; // Vaciar lista (en caso de recargar)
 
@@ -49,19 +55,20 @@ async function loadAccounts() {
 
           const showPasswordButton = document.createElement("button");
           showPasswordButton.textContent = "Show Password";
-          const cookies = getCookieObject(); // Aplicar tema oscuro a los nuevos botones
-          if (cookies.theme === "dark")
-            showPasswordButton.classList.add("dark-mode");
 
           const editAccountButton = document.createElement("button");
           editAccountButton.textContent = "Edit Account";
-          if (cookies.theme === "dark")
-            editAccountButton.classList.add("dark-mode");
-
+          
           const deleteAccountButton = document.createElement("button");
           deleteAccountButton.textContent = "Delete Account";
-          if (cookies.theme === "dark")
+          
+          const cookies = getCookieObject(); // Aplicar tema oscuro a los nuevos botones
+          
+          if (cookies.theme === "dark") {
+            showPasswordButton.classList.add("dark-mode");
+            editAccountButton.classList.add("dark-mode");
             deleteAccountButton.classList.add("dark-mode");
+          }
 
           // Attach event listener to the button
           showPasswordButton.addEventListener("click", async () => {
@@ -69,11 +76,7 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Please enter your master password");
+              return setInfoTextWithCooldown("Please enter your master password");
             }
 
             let account_password = account.account_password;
@@ -82,11 +85,7 @@ async function loadAccounts() {
               masterPassword
             );
             if (decryptedPassword === "") {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Incorrect master password");
+              return setInfoTextWithCooldown("Incorrect master password");
             }
             showPasswordButton.style.display = "none";
             listItem.textContent = `Site: ${account.account_name}, Username: ${account.account_username}, Password: ${decryptedPassword}`;
@@ -97,37 +96,20 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              document.getElementById("info").innerHTML =
-                "Please enter your master password";
-                setTimeout(function() {
-                  document.getElementById("info").innerHTML = "";
-              }, 3000); // 3000 milliseconds = 3 seconds
-              return;
+              return setInfoTextWithCooldown("Please enter your master password");
             }
 
             newAccountName = document.getElementById("site").value;
             if (!newAccountName) {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Please enter the site name.");
+              return setInfoTextWithCooldown("Please enter the site name.");
           }
             newAccountUsername = document.getElementById("username").value;
             if (!newAccountUsername) {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Please enter the account username.");
+              return setInfoTextWithCooldown("Please enter the account username.");
           }
             newAccountPassword = document.getElementById("password").value;
             if (!newAccountPassword) {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Please enter the account password.");
+              return setInfoTextWithCooldown("Please enter the account password.");
           }
             const response = await fetch(
               `${window.location.protocol}//${window.location.hostname}/editAccount`,
@@ -149,15 +131,11 @@ async function loadAccounts() {
               }
             );
             if (response.ok) {
-              document.getElementById("info").innerHTML =
+              infoText =
                 "Account modified succesfully";
               return window.reloadPage();
             } else {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Incorrect master password");
+              setInfoTextWithCooldown("Incorrect master password");
             }
           });
 
@@ -166,12 +144,7 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              document.getElementById("info").innerHTML =
-                "Please enter your master password";
-              return;
+              setInfoTextWithCooldown("Please enter your master password");
             }
             const response = await fetch(
               `${window.location.protocol}//${window.location.hostname}/deleteAccount`,
@@ -190,15 +163,10 @@ async function loadAccounts() {
               }
             );
             if (response.ok) {
-              document.getElementById("info").innerHTML =
-                "Account deleted succesfully";
+              setInfoTextWithCooldown("Account deleted succesfully");
               return window.reloadPage();
             } else {
-              setTimeout(function() {
-                document.getElementById("info").innerHTML = "";
-            }, 3000); // 3000 milliseconds = 3 seconds
-              return (document.getElementById("info").innerHTML =
-                "Incorrect master password");
+              return setInfoTextWithCooldown("Incorrect master password");
             }
           });
 
@@ -213,7 +181,7 @@ async function loadAccounts() {
     })
     .catch((error) => {
       console.error("Error fetching accounts:", error);
-      document.getElementById("info").innerHTML = "Error loading accounts";
+      infoText = "Error loading accounts";
     });
 }
 
@@ -249,7 +217,7 @@ function loadCookies() {
   const cookies = getCookieObject();
 
   if (cookies.username) {
-    document.getElementById("welcome-text").innerHTML =
+    document.getElementById("welcome-text").textContent =
       "Welcome " + cookies.username; // Mostrar nombre de usuario en la bienvenida
     loadAccounts(); // Cargar cuentas
   } else window.location.href = "./register.html"; // Si no hay usuario, redirigir al registro
@@ -269,27 +237,15 @@ function applyThemeFromCookie() {
    localStorage.setItem("DarkMode", cookies.theme);
  }
 
-  console.log(cookies.theme);
-  console.log(tema);
-  console.log(theme);
-
   if (theme == false) {
     // Modo claro
-    document.body.classList.remove("dark-mode");
-    document.getElementById("top-header").classList.remove("dark-mode");
-    document.getElementById("addAccountButton").classList.remove("dark-mode");
-    document.getElementById("user-button").classList.remove("dark-mode");
-    document.querySelectorAll("button, select").forEach((element) => {
+    document.querySelectorAll("button, select, header, body").forEach((element) => {
       element.classList.remove("dark-mode");
     });
     document.getElementById("mode-select").value = 0;
   } else if (theme == true) {
     // Modo oscuro
-    document.body.classList.add("dark-mode");
-    document.getElementById("top-header").classList.add("dark-mode");
-    document.getElementById("addAccountButton").classList.add("dark-mode");
-    document.getElementById("user-button").classList.add("dark-mode");
-    document.querySelectorAll("button, select").forEach((element) => {
+    document.querySelectorAll("button, select, header, body").forEach((element) => {
       element.classList.add("dark-mode");
     });
     document.getElementById("mode-select").value = 1;
@@ -324,12 +280,7 @@ document // Añadir cuenta
 
     const masterPassword = document.getElementById("master-password").value;
     if (!masterPassword) {
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
-      document.getElementById("info").innerHTML =
-        "Please enter your master password";
-      return;
+      setInfoTextWithCooldown("Please enter your master password");
     }
 
     try {
@@ -357,11 +308,8 @@ document // Añadir cuenta
           errorData = JSON.parse(responseText);
         } catch (e) {
           errorData = { message: responseText };
+          return setInfoTextWithCooldown(errorData.message);
         }
-        document.getElementById("info").innerHTML = errorData.message;
-        setTimeout(function() {
-          document.getElementById("info").innerHTML = "";
-      }, 3000); // 3000 milliseconds = 3 seconds
       } else {
         let result;
         try {
@@ -369,16 +317,10 @@ document // Añadir cuenta
         } catch (e) {
           result = { message: responseText };
         }
-        document.getElementById("info").innerHTML = result.message;
-        setTimeout(function() {
-          document.getElementById("info").innerHTML = "";
-      }, 3000); // 3000 milliseconds = 3 seconds
+        setInfoTextWithCooldown(result.message);
       }
     } catch (err) {
-      document.getElementById("info").innerHTML = "Error adding account";
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
+      return setInfoTextWithCooldown("Error adding account");
     }
     loadAccounts(); // Recargar cuentas
   });
@@ -434,18 +376,6 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
     const currentMasterPassword = document.getElementById("current-master-password-textbox").value;
     const newMasterPassword = document.getElementById("new-master-password-textbox").value;
 
-    if (!currentMasterPassword) {
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
-      return (document.getElementById("info").innerHTML = "Please enter your current master password");
-    }
-    if (!newMasterPassword) {
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
-      return (document.getElementById("info").innerHTML = "Please enter your new master password");
-    }
     try {
     const response = await fetch(`${window.location.protocol}//${window.location.hostname}/change-password`, {
       method: "POST",
@@ -457,22 +387,16 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
 
     if (!response.ok) {
       const err = await response.json();
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
-      return (document.getElementById("info").innerHTML = err.message);
+      return setInfoTextWithCooldown(err.message);
     } else {
-      document.getElementById("info").innerHTML = "Password changed successfully";
+      setInfoTextWithCooldown("Password changed successfully");
       return location.reload();
     }
   } catch(err) {
-      setTimeout(function() {
-        document.getElementById("info").innerHTML = "";
-    }, 3000); // 3000 milliseconds = 3 seconds
-      return (document.getElementById("info").innerHTML = err.message);
+      return setInfoTextWithCooldown(err.message);
   }
 });
 
 document.addEventListener("DOMContentLoaded", loadCookies); // Cargar cookies al cargar el DOM
 applyThemeFromCookie(); // Aplicar tema
-generatePassword();
+generatePassword(); // Generar contraseña

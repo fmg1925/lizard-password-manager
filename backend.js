@@ -11,12 +11,11 @@ const path = require('path');
 app.use(express.json()); // Web server
 app.use(cookieParser()); // Manejo de cookies
 app.use(cors());
-// Serve static files (like HTML, CSS, JS) from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));  // Change 'public' to the folder where your HTML is
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve the HTML file for the root path
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'main.html'));  // Modify 'index.html' to match your file name
+  res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });
 
 const db = mysql.createConnection({ // Crear conexión con los parámetros del .env
@@ -25,7 +24,7 @@ const db = mysql.createConnection({ // Crear conexión con los parámetros del .
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  connectTimeout: 10000  // Set appropriate timeout
+  connectTimeout: 10000
 });
 
 const ALGORITHM = process.env.ALGORITHM;
@@ -59,16 +58,12 @@ app.post("/register", async (req, res) => { // Registrar usuario
       console.error('Database error:', err);
   
       if (err.code === 'ER_DUP_ENTRY') {
-        // MySQL duplicate entry error
         return res.status(409).json({ message: "Username already exists" });
       } else if (err.code === 'ER_BAD_NULL_ERROR') {
-        // A required field was null
         return res.status(400).json({ message: "Missing required fields" });
       } else if (err.code === 'ER_PARSE_ERROR') {
-        // Syntax error in SQL or procedure
         return res.status(500).json({ message: "Database syntax error" });
       } else {
-        // Generic error
         return res.status(500).json({ message: "Internal server error" });
       }
     }
@@ -96,7 +91,6 @@ app.post("/login", async (req, res) => {
   try {
     const results = await query("CALL checkExistingUsername(?)", [username]);
 
-    // Stored procedures in MySQL return nested arrays
     if (Array.isArray(results) && results.length > 0 && results[0].length > 0) {
       const user = results[0][0];
 
@@ -313,6 +307,6 @@ function decrypt(encrypted, masterPassword) { // Desencriptar usando la contrase
 
 const PORT = process.env.PORT || 3000; // Puerto 3000 por defecto si no se define en el .env
 
-app.listen(PORT, () => { // Iniciar servidor Node
+app.listen(PORT, () => { // Iniciar servidor
   console.log(`Server running at http://${process.env.DB_HOST}:${PORT}`);
 });

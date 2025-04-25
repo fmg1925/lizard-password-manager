@@ -183,19 +183,26 @@ li, label, input {
     margin-right: 10px;
 }
 
+#password-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: -30px;
+}
+
+#password-div h2 {
+    margin-top: 8px;
+}
+
 #password-length-textbox {
     width: 100px;
     text-align: right;
 }
 
-#password-div h2, #password-div input {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-#password-div h2 {
+#password-div button {
     margin-top: 10px;
+    width: 20px;
 }
 
 #change-password-form {

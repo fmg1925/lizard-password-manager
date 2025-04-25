@@ -25,6 +25,16 @@ function reloadPage() {
   location.reload();
 }
 
+function changeValue(amount) {
+  const input = document.getElementById('password-length-textbox');
+  let value = parseInt(input.value) || 16;
+  value += amount;
+  if (value < 12) value = 12;
+  if (value > 32) value = 32;
+  input.value = value;
+  generatePassword(); // if you still want to use your function
+}
+
 function getCookieObject() {
   // Conseguir cookies
   return Object.fromEntries(

@@ -38,7 +38,7 @@ document
         } catch (e) {
           errorData = { message: responseText };
         }
-        infoText = errorData.message;
+        return setInfoTextWithCooldown(errorData.message);
       } else {
         let result;
         try {
@@ -46,8 +46,7 @@ document
         } catch (e) {
           result = { message: responseText };
         }
-        infoText =
-          "User registered succesfully";
+        setInfoTextWithCooldown("User registered succesfully");
         const days = 7;
         const date = new Date();
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);

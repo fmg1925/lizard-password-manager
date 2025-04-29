@@ -1,4 +1,4 @@
-Sitio web (fuera de servicio no pagué la suscripción (decía gratis)): https://lizard-password-manager.onrender.com
+Sitio web: https://lizard-password-manager.onrender.com
 
 Gestor de contraseñas hecho en NodeJS y MySQL.
 
@@ -24,6 +24,6 @@ npm i\
 Ejecutar las consultas en MySQL
 
 Uso:\
-node /js/backend.js
+node backend.js
 
   

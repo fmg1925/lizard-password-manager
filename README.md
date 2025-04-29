@@ -1,6 +1,20 @@
 Sitio web: https://lizard-password-manager.onrender.com
 
-Gestor de contraseñas hecho en NodeJS y MySQL (+PHP).
+Gestor de contraseñas hecho en NodeJS y MySQL + PHP (branch PHP).
+
+Se usan las siguientes librerías de NodeJS:
+
+dotenv\
+express\
+mysql2\
+cors\
+bcryptjs\
+crypto\
+path
+
+Se usan las siguientes librerías de PHP:
+
+php-mysqli
 
 **Funcionalidades:**\
 Registro e inicio de sesión.\
@@ -14,6 +28,10 @@ Información privada almacenada en .env\
 Configuración adaptable desde el .env
 
 **Cómo instalar:**
+
+Prerequisitos:\
+NodeJS\
+Servidor PHP
 
 Descargar el repositorio:\
 git clone https://github.com/fmg1925/lizard-password-manager.git
@@ -30,4 +48,5 @@ Uso (php):\
 node backend.js\
 php -S 127.0.0.1:8000
 
-  
+En caso de fallos (testing local):\
+Asignar los puertos manualmente a las URLs en los archivos js.

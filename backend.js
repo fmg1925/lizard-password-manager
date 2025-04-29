@@ -4,16 +4,13 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
-const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 const path = require('path');
 
 app.use(express.json()); // Web server
-app.use(cookieParser()); // Manejo de cookies
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the HTML file for the root path
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });

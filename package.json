@@ -1,6 +1,6 @@
 {
   "name": "lizard-password-manager",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "",
   "main": "backend.js",
   "scripts": {
@@ -8,10 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "GNU",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",

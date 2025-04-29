@@ -55,7 +55,9 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
     return setInfoTextWithCooldown("Error encountered while logging in");
   }
 });
+
 //Funciones para mantener y elegir el tema(oscuro y claro)
+
 function cargarTema() {
   const tema = localStorage.getItem("DarkMode");
   const selectdark = document.getElementById("mode-select");

@@ -15,14 +15,34 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'main.html'));
 });
 
-const db = mysql.createConnection({ // Crear conexión con los parámetros del .env
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  connectTimeout: 10000
-});
+function createConnection() {
+  const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+  });
+
+  db.connect(err => {
+    if (err) {
+      console.error('Error connecting:', err);
+      setTimeout(createConnection, 2000);
+    } else {
+      console.log('Connected to database');
+    }
+  });
+
+  db.on('error', err => {
+    console.error('Database error:', err);
+    if (err.fatal && err.code === 'PROTOCOL_CONNECTION_LOST') {
+      createConnection();
+    }
+  });
+
+  return db;
+}
+
+let db = createConnection();
 
 const ALGORITHM = process.env.ALGORITHM;
 const IV_LENGTH = 16;

@@ -31,12 +31,10 @@ document
       );
 
       const responseData = await response.json();
-      console.log(responseData.message);
       if (!response.ok) {
         return setInfoTextWithCooldown(responseData.message);
       }
-        infoText =
-          "User registered succesfully";
+        setInfoTextWithCooldown("User registered succesfully");
         const days = 7;
         const date = new Date();
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -44,7 +42,7 @@ document
         document.cookie = `username=${username}; ${expires}; path=/; samesite=Strict`; // Asignar cookies
         window.location.href = "main.html"; // Redigir a la página principal
     } catch (err) {
-      setInfoTextWithCooldown("Error registering account");
+      return setInfoTextWithCooldown("Error registering account");
     }
   });
 

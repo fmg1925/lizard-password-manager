@@ -50,7 +50,7 @@ if (password_verify($password, $storedPassword)) {
     echo json_encode(["success" => true, "message" => "Login successful"]);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid password"]);
-    http_response_code(401); // Unauthorized error, 401 status code
+    http_response_code(401);
     exit;
 }
 

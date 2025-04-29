@@ -32,7 +32,6 @@ if (!$conn) {
     exit;
 }
 
-// Receive JSON input
 $data = json_decode(file_get_contents('php://input'), true);
 
 $username = $data['username'] ?? null;
@@ -44,11 +43,9 @@ if (!$username || !$password) {
     exit;
 }
 
-// Hash the password
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
 try {
-    // Prepare and call the stored procedure
     $stmt = mysqli_prepare($conn, "CALL register(?, ?)");
     mysqli_stmt_bind_param($stmt, "ss", $username, $hashedPassword);
 
@@ -63,13 +60,13 @@ try {
 } catch (mysqli_sql_exception $e) {
     $errorCode = $e->getCode();
 
-    if ($errorCode == 1062) { // Duplicate entry
+    if ($errorCode == 1062) {
         http_response_code(409);
         echo json_encode(["message" => "Username already exists"]);
-    } elseif ($errorCode == 1048) { // Column cannot be null
+    } elseif ($errorCode == 1048) {
         http_response_code(400);
         echo json_encode(["message" => "Missing required fields"]);
-    } elseif ($errorCode == 1064) { // Syntax error
+    } elseif ($errorCode == 1064) {
         http_response_code(500);
         echo json_encode(["message" => "Database syntax error"]);
     } else {

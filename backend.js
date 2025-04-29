@@ -61,14 +61,14 @@ app.post("/register", async (req, res) => {
 
     const data = await response.text();
     if (!response.ok) {
-      return res.status(response.status).send(data); // Forward PHP's error status
+      return res.status(response.status).send(data);
     }
     res.send(data);
   } catch (err) {
     if (!res.headersSent) {
       res.status(500).send("Server is unreachable");
     }
-    return; // <== VERY IMPORTANT to stop execution
+    return;
   }
 });
 
@@ -92,7 +92,7 @@ app.post("/login", async (req, res) => {
 
     const data = await response.text();
     if (!response.ok) {
-      return res.status(response.status).send(data); // Forward PHP's error status
+      return res.status(response.status).send(data);
     }
     res.send(data);
   } catch (err) {
@@ -100,7 +100,7 @@ app.post("/login", async (req, res) => {
 
       res.status(500).send("Server is unreachable");
     }
-    return; // <== VERY IMPORTANT to stop execution
+    return;
   }
 });
 

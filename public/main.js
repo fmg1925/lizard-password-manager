@@ -147,11 +147,10 @@ async function loadAccounts() {
               }
             );
             if (response.ok) {
-              infoText =
-                "Account modified succesfully";
+              setInfoTextWithCooldown("Account modified succesfully");
               return window.reloadPage();
             } else {
-              setInfoTextWithCooldown("Incorrect master password");
+              return setInfoTextWithCooldown("Incorrect master password");
             }
           });
 
@@ -160,7 +159,7 @@ async function loadAccounts() {
             const masterPassword =
               document.getElementById("master-password").value;
             if (!masterPassword) {
-              setInfoTextWithCooldown("Please enter your master password");
+              return setInfoTextWithCooldown("Please enter your master password");
             }
             const response = await fetch(
               `${window.location.protocol}//${window.location.hostname}:3000/deleteAccount`,
@@ -193,11 +192,12 @@ async function loadAccounts() {
         });
       } else {
         console.error("Data is not an array:", data);
+        return;
       }
     })
     .catch((error) => {
       console.error("Error fetching accounts:", error);
-      infoText = "Error loading accounts";
+      return setInfoTextWithCooldown("Error loading accounts");
     });
 }
 
@@ -290,7 +290,7 @@ document // Añadir cuenta
 
     const masterPassword = document.getElementById("master-password").value;
     if (!masterPassword) {
-      setInfoTextWithCooldown("Please enter your master password");
+      return setInfoTextWithCooldown("Please enter your master password");
     }
 
     try {
@@ -327,7 +327,7 @@ document // Añadir cuenta
           result = JSON.parse(responseText);
           setInfoTextWithCooldown(result.message);
         } catch (e) {
-          return setInfoTextWithCooldown(responseText);
+          setInfoTextWithCooldown(responseText);
         }
       }
     } catch (err) {

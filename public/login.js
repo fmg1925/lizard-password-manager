@@ -52,7 +52,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
     }
   } catch (err) {
     console.error("Error during login:", err);
-    setInfoTextWithCooldown("Error encountered while logging in");
+    return setInfoTextWithCooldown("Error encountered while logging in");
   }
 });
 //Funciones para mantener y elegir el tema(oscuro y claro)

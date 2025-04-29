@@ -69,7 +69,7 @@ function cargarTema() {
 function reloadPage() {
   const darkMode = document.getElementById("mode-select").value;
   let darkModeItems = document.querySelectorAll("select, button, input, header, body");
-  if (darkMode == 1) {
+  if (darkMode == 0) {
     localStorage.setItem("DarkMode", "light");
     darkModeItems.forEach((element) => {
       element.classList.remove("dark-mode");

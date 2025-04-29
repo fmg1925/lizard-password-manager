@@ -4,12 +4,10 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
-const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const path = require("path");
 
 app.use(express.json()); // Web server
-app.use(cookieParser()); // Manejo de cookies
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -18,15 +16,34 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "main.html"));
 });
 
-const db = mysql.createConnection({
-  // Crear conexión con los parámetros del .env
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  connectTimeout: 10000,
-});
+function createConnection() {
+  const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+  });
+
+  db.connect(err => {
+    if (err) {
+      console.error('Error connecting:', err);
+      setTimeout(createConnection, 2000);
+    } else {
+      console.log('Connected to database');
+    }
+  });
+
+  db.on('error', err => {
+    console.error('Database error:', err);
+    if (err.fatal && err.code === 'PROTOCOL_CONNECTION_LOST') {
+      createConnection();
+    }
+  });
+
+  return db;
+}
+
+let db = createConnection();
 
 const ALGORITHM = process.env.ALGORITHM;
 const IV_LENGTH = 16;

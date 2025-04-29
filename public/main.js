@@ -52,7 +52,7 @@ async function loadAccounts() {
   fetch(
     `${window.location.protocol}//${
       window.location.hostname
-    }/accounts?username=${encodeURIComponent(cookies.username)}`,
+    }:3000/accounts?username=${encodeURIComponent(cookies.username)}`,
     {
       method: "GET",
     }
@@ -128,7 +128,7 @@ async function loadAccounts() {
               return setInfoTextWithCooldown("Please enter the account password.");
           }
             const response = await fetch(
-              `${window.location.protocol}//${window.location.hostname}/editAccount`,
+              `${window.location.protocol}//${window.location.hostname}:3000/editAccount`,
               {
                 method: "POST",
                 headers: {
@@ -163,7 +163,7 @@ async function loadAccounts() {
               setInfoTextWithCooldown("Please enter your master password");
             }
             const response = await fetch(
-              `${window.location.protocol}//${window.location.hostname}/deleteAccount`,
+              `${window.location.protocol}//${window.location.hostname}:3000/deleteAccount`,
               {
                 method: "POST",
                 headers: {
@@ -205,7 +205,7 @@ async function decrypt(account_password, masterPassword) {
   // Desencriptar contraseña
   try {
     const response = await fetch(
-      `${window.location.protocol}//${window.location.hostname}/decrypt`,
+      `${window.location.protocol}//${window.location.hostname}:3000/decrypt`,
       {
         method: "POST",
         headers: {
@@ -295,7 +295,7 @@ document // Añadir cuenta
 
     try {
       const response = await fetch(
-        `${window.location.protocol}//${window.location.hostname}/add-account`,
+        `${window.location.protocol}//${window.location.hostname}:3000/add-account`,
         {
           method: "POST",
           headers: {
@@ -388,7 +388,7 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
     const newMasterPassword = document.getElementById("new-master-password-textbox").value;
 
     try {
-    const response = await fetch(`${window.location.protocol}//${window.location.hostname}/change-password`, {
+    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:3000/change-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
 
   try {
     const response = await fetch(
-      `${window.location.protocol}//${window.location.hostname}/login`,
+      `${window.location.protocol}//${window.location.hostname}:3000/login`,
       {
         // Iniciar sesión
         method: "POST",
@@ -26,7 +26,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
         credentials: "include",
       }
     );
-
     const responseText = await response.text();
     if (!response.ok) {
       let errorData;

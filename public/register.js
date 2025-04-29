@@ -19,7 +19,7 @@ document
 
     try {
       const response = await fetch(
-        `${window.location.protocol}//${window.location.hostname}/register`,
+        `${window.location.protocol}//${window.location.hostname}:3000/register`,
         {
           // Registrar usuario
           method: "POST",
@@ -30,22 +30,11 @@ document
         }
       );
 
-      const responseText = await response.text();
+      const responseData = await response.json();
+      console.log(responseData.message);
       if (!response.ok) {
-        let errorData;
-        try {
-          errorData = JSON.parse(responseText);
-        } catch (e) {
-          errorData = { message: responseText };
-        }
-        infoText = errorData.message;
-      } else {
-        let result;
-        try {
-          result = JSON.parse(responseText);
-        } catch (e) {
-          result = { message: responseText };
-        }
+        return setInfoTextWithCooldown(responseData.message);
+      }
         infoText =
           "User registered succesfully";
         const days = 7;
@@ -54,7 +43,6 @@ document
         const expires = "expires=" + date.toUTCString();
         document.cookie = `username=${username}; ${expires}; path=/; samesite=Strict`; // Asignar cookies
         window.location.href = "main.html"; // Redigir a la página principal
-      }
     } catch (err) {
       setInfoTextWithCooldown("Error registering account");
     }

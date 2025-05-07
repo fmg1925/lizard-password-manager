@@ -6,6 +6,12 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 $inputData = json_decode(file_get_contents("php://input"), true);
 
+if (empty($inputData['username']) || empty($inputData['password'])) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Username and password are required"]);
+    exit;
+}
+
 $username = $inputData['username'];
 $password = $inputData['password'];
 
@@ -26,7 +32,7 @@ try {
 
 if (!$conn) {
     http_response_code(500);
-    json_encode(['message' => 'Could not connect to database ' . $e->getMessage()]);
+    echo json_encode(['message' => 'Could not connect to database ' . $e->getMessage()]);
     exit;
 }
 
@@ -40,7 +46,7 @@ $stmt->bind_result($userId, $storedUsername, $storedPassword, $createdAt);
 
 if ($stmt->num_rows <= 0) {
     http_response_code(404);
-    echo json_encode(["success" => false, "message" => "User not found"]);
+    echo json_encode(["success" => false, "message" => "Invalid username or password"]);
     exit;
 }
 
@@ -49,8 +55,8 @@ $stmt->fetch();
 if (password_verify($password, $storedPassword)) {
     echo json_encode(["success" => true, "message" => "Login successful"]);
 } else {
-    echo json_encode(["success" => false, "message" => "Invalid password"]);
     http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Invalid username or password"]);
     exit;
 }
 

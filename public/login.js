@@ -23,7 +23,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include",
       }
     );
     const responseText = await response.text();

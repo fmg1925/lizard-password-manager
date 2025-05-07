@@ -6,6 +6,12 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 $inputData = json_decode(file_get_contents("php://input"), true);
 
+if (empty($inputData['username']) || empty($inputData['password'])) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Username and password are required"]);
+    exit;
+}
+
 $username = $inputData['username'];
 $password = $inputData['password'];
 
@@ -73,10 +79,7 @@ try {
         http_response_code(500);
         echo json_encode(["message" => "Internal server error", "error" => $e->getMessage()]);
     }
+    mysqli_close($conn);
     exit;
 }
-
-
-mysqli_stmt_close($stmt);
-mysqli_close($conn);
 ?>

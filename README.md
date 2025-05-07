@@ -41,6 +41,10 @@ cd lizard-password-manager\
 npm i\
 Ejecutar las consultas en MySQL
 
+**Asignar valores en el archivo .env:**\
+Algoritmos disponibles = aes-128-cbc, aes-192-cbc, aes-256-cbc, aes-128-ctr, aes-256-ctr, aes-128-gcm, aes-256-gcm, des-ede3-cbc\
+Llave secreta: Cadena de carácteres (16 a 32 caŕacteres recomendado), se usa en la generación de hashes, una llave secreta muy fácil hace el programa vulnerable a ataques de diccionario.
+
 Uso:\
 node backend.js
 

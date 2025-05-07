@@ -146,13 +146,12 @@ async function loadAccounts() {
                 }),
               }
             );
+            const responseData = await response.json();
             if (response.ok) {
-              setInfoTextWithCooldown("Account modified succesfully");
+              setInfoTextWithCooldown(responseData.message);
               return window.reloadPage();
             } else {
-              const errorData = await response.json();
-              console.log(errorData.message);
-              return setInfoTextWithCooldown(errorData.message);
+              return setInfoTextWithCooldown(responseData.message);
             }
           });
 
@@ -179,13 +178,12 @@ async function loadAccounts() {
                 }),
               }
             );
+            const responseData = await response.json();
             if (response.ok) {
-              setInfoTextWithCooldown("Account deleted succesfully");
+              setInfoTextWithCooldown(responseData.message);
               return window.reloadPage();
             } else {
-              const errorData = await response.json();
-              console.log(errorData.message);
-              return setInfoTextWithCooldown(errorData.message);
+              return setInfoTextWithCooldown(responseData.message);
             }
           });
 
@@ -220,7 +218,6 @@ async function decrypt(account_password, masterPassword) {
     const result = await response.json();
 
     if (!response.ok) {
-      console.log(result.message);
       setInfoTextWithCooldown(result.message);
       return "";
     }
@@ -383,11 +380,11 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
       body: JSON.stringify({ username, currentMasterPassword, newMasterPassword }),
     });
 
+    const responseData = await response.json(); 
     if (!response.ok) {
-      const err = await response.json();
-      return setInfoTextWithCooldown(err.message);
+      return setInfoTextWithCooldown(responseData.message);
     } else {
-      setInfoTextWithCooldown("Password changed successfully");
+      setInfoTextWithCooldown(responseData.message);
       return location.reload();
     }
   } catch(err) {

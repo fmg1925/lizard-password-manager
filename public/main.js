@@ -146,11 +146,12 @@ async function loadAccounts() {
                 }),
               }
             );
+            const responseData = await response.json();
             if (response.ok) {
-              setInfoTextWithCooldown("Account modified succesfully");
+              setInfoTextWithCooldown(responseData.message);
               return window.reloadPage();
             } else {
-              return setInfoTextWithCooldown("Incorrect master password");
+              return setInfoTextWithCooldown(responseData.message);
             }
           });
 
@@ -177,11 +178,12 @@ async function loadAccounts() {
                 }),
               }
             );
+            const responseData = await response.json();
             if (response.ok) {
-              setInfoTextWithCooldown("Account deleted succesfully");
+              setInfoTextWithCooldown(responseData.message);
               return window.reloadPage();
             } else {
-              return setInfoTextWithCooldown("Incorrect master password");
+              return setInfoTextWithCooldown(responseData.message);
             }
           });
 
@@ -191,11 +193,10 @@ async function loadAccounts() {
           accountsList.appendChild(listItem);
         });
       } else {
-        console.error("Data is not an array:", data);
+        return;
       }
     })
-    .catch((error) => {
-      console.error("Error fetching accounts:", error);
+    .catch(() => {
       return setInfoTextWithCooldown("Error loading accounts");
     });
 }
@@ -217,12 +218,13 @@ async function decrypt(account_password, masterPassword) {
     const result = await response.json();
 
     if (!response.ok) {
+      setInfoTextWithCooldown(result.message);
       return "";
     }
 
     return result.decrypted || "";
   } catch (error) {
-    console.error("Failed to send request:", error);
+    setInfoTextWithCooldown("Error decrypting password");
     return "";
   }
 }
@@ -310,25 +312,8 @@ document // Añadir cuenta
         }
       );
 
-      const responseText = await response.text();
-      if (!response.ok) {
-        let errorData;
-        try {
-          errorData = JSON.parse(responseText);
-          return setInfoTextWithCooldown(errorData.message);
-        } catch (e) {
-          errorData = { message: responseText };
-          return setInfoTextWithCooldown(errorData.message);
-        }
-      } else {
-        let result;
-        try {
-          result = JSON.parse(responseText);
-          setInfoTextWithCooldown(result.message);
-        } catch (e) {
-          setInfoTextWithCooldown(responseText);
-        }
-      }
+      const responseData = await response.json();
+      setInfoTextWithCooldown(responseData.message);
     } catch (err) {
       return setInfoTextWithCooldown("Error adding account");
     }
@@ -395,11 +380,11 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
       body: JSON.stringify({ username, currentMasterPassword, newMasterPassword }),
     });
 
+    const responseData = await response.json(); 
     if (!response.ok) {
-      const err = await response.json();
-      return setInfoTextWithCooldown(err.message);
+      return setInfoTextWithCooldown(responseData.message);
     } else {
-      setInfoTextWithCooldown("Password changed successfully");
+      setInfoTextWithCooldown(responseData.message);
       return location.reload();
     }
   } catch(err) {

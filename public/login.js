@@ -23,27 +23,13 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include",
       }
     );
-
-    const responseText = await response.text();
+    const responseText = await response.json();
     if (!response.ok) {
-      let errorData;
-      try {
-        errorData = JSON.parse(responseText);
-      } catch (e) {
-        errorData = { message: responseText };
-      }
-      return setInfoTextWithCooldown("Incorrect username or password");
+      return setInfoTextWithCooldown(responseText.message);
     } else {
-      let result;
-      try {
-        result = JSON.parse(responseText);
-      } catch (e) {
-        result = { message: responseText };
-      }
-      setInfoTextWithCooldown(result.message);
+      setInfoTextWithCooldown(responseText.message);
       const days = 7;
       const date = new Date();
       date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -52,11 +38,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
       window.location.href = "main.html"; // Redirigir a página principal
     }
   } catch (err) {
-    console.error("Error during login:", err);
-    setInfoTextWithCooldown("Error encountered while logging in");
+    return setInfoTextWithCooldown("Error encountered while logging in");
   }
 });
+
 //Funciones para mantener y elegir el tema(oscuro y claro)
+
 function cargarTema() {
   const tema = localStorage.getItem("DarkMode");
   const selectdark = document.getElementById("mode-select");

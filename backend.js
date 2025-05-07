@@ -28,7 +28,7 @@ function createConnection() {
       console.error('Error connecting:', err);
       setTimeout(createConnection, 2000);
     } else {
-      console.log('Connected to database');
+      console.log('Connected to MySQL');
     }
   });
 
@@ -48,18 +48,10 @@ const ALGORITHM = process.env.ALGORITHM;
 const IV_LENGTH = 16;
 const SALT = process.env.SECRET_KEY;
 
-db.connect((err) => { // Conectar a la DB
-  if (err) {
-    console.error("DB connection error:", err);
-    return;
-  }
-  console.log("Connected to MySQL");
-});
-
 app.get("/get-users", (_req, res) => { // Conseguir lista de usuarios
   db.query('CALL getUsers()', (err, results) => {
     if (err) {
-      return res.status(500).json({ error: "Error executing query" });
+      return res.status(500).json({ message: "Error executing query" });
     }
     res.json(results);
   });
@@ -143,18 +135,18 @@ app.get('/accounts', (req, res) => { // Conseguir cuentas del usuario
   const username = req.query.username;
 
   if (!username) {
-    return res.status(400).json({ error: 'Username is required in cookies' });
+    return res.status(400).json({ message: 'Username is required' });
   }
 
   db.query('CALL getUserAccounts(?)', [username], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Database query failed', details: err.message });
+      return res.status(500).json({ message: 'Database query failed' });
     }
 
     if (Array.isArray(results)) {
       res.json(results);
     } else {
-      res.status(404).json({ error: 'No accounts found for this username' });
+      res.status(404).json({ message: 'No accounts found for this username' });
     }
   });
 });

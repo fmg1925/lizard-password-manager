@@ -30,22 +30,10 @@ document
         }
       );
 
-      const responseText = await response.text();
+      const responseData = await response.json();
       if (!response.ok) {
-        let errorData;
-        try {
-          errorData = JSON.parse(responseText);
-        } catch (e) {
-          errorData = { message: responseText };
-        }
-        return setInfoTextWithCooldown(errorData.message);
-      } else {
-        let result;
-        try {
-          result = JSON.parse(responseText);
-        } catch (e) {
-          result = { message: responseText };
-        }
+        return setInfoTextWithCooldown(responseData.message);
+      }
         setInfoTextWithCooldown("User registered succesfully");
         const days = 7;
         const date = new Date();
@@ -53,9 +41,8 @@ document
         const expires = "expires=" + date.toUTCString();
         document.cookie = `username=${username}; ${expires}; path=/; samesite=Strict`; // Asignar cookies
         window.location.href = "main.html"; // Redigir a la página principal
-      }
     } catch (err) {
-      setInfoTextWithCooldown("Error registering account");
+      return setInfoTextWithCooldown("Error registering account");
     }
   });
 

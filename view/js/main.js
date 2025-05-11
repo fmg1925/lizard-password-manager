@@ -370,6 +370,7 @@ document.getElementById("change-password-form") // Cambio de contraseña maestra
     const username = cookies.username;
     const currentMasterPassword = document.getElementById("current-master-password-textbox").value;
     const newMasterPassword = document.getElementById("new-master-password-textbox").value;
+    if(currentMasterPassword.length < 16 || newMasterPassword.length < 16) return setInfoTextWithCooldown("Passwords can't be less than 16 characters long");
 
     try {
     const response = await fetch(`${window.location.protocol}//${window.location.hostname}:3000/change-password`, {

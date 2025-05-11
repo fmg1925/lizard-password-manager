@@ -61,7 +61,7 @@ app.get("/get-users", (_req, res) => {
 
 app.post("/register", async (req, res) => {
   try {
-    const response = await fetch("http://127.0.0.1:8000/backend/register.php", {
+    const response = await fetch("http://localhost/lizard/public/index.php?controller=User&action=register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
@@ -91,7 +91,7 @@ const query = (sql, values) => {
 
 app.post("/login", async (req, res) => {
   try {
-    const response = await fetch("http://127.0.0.1:8000/backend/login.php", {
+    const response = await fetch("http://localhost/lizard/public/index.php?controller=User&action=login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),

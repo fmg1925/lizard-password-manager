@@ -1,6 +1,6 @@
 {
   "name": "lizard-password-manager-php",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "",
   "main": "backend.js",
   "scripts": {

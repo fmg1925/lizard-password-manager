@@ -38,6 +38,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => { /
       window.location.href = "main.html"; // Redirigir a página principal
     }
   } catch (err) {
+    console.log(err);
     return setInfoTextWithCooldown("Error encountered while logging in");
   }
 });

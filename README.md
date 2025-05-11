@@ -1,4 +1,4 @@
-Sitio web: https://lizard-password-manager.onrender.com
+Sitio web: https://lizard-password-manager.onrender.com (NodeJS)
 
 Gestor de contraseñas hecho en NodeJS y MySQL + PHP (branch PHP).
 
@@ -14,7 +14,7 @@ path
 
 Se usan las siguientes librerías de PHP:
 
-php-mysqli
+~~php-mysqli~~ PHP Data Object (PDO)
 
 **Funcionalidades:**\
 Registro e inicio de sesión.\
@@ -50,7 +50,8 @@ node backend.js
 
 Uso (php):\
 node backend.js\
-php -S 127.0.0.1:8000
+php -S 127.0.0.1:8000 (testing sin XAMPP)
 
 En caso de fallos (testing local):\
-Asignar los puertos manualmente a las URLs en los archivos js.
+Asignar los puertos manualmente a las URLs en los archivos js.\
+Cambiar la url de index.php en backend.js.

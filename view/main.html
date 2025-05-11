@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lizard Password Manager</title>
   <link rel="icon" type="image/jpg" href="https://cdn.mos.cms.futurecdn.net/6AxBGxrtbSAkmhLmtdvGLX-1200-80.jpg">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="./stylesheets/main.css">
 </head>
 
 <body>
@@ -82,12 +82,12 @@
   <form id="change-password-form">
     <h1>Change Master Password</h1>
     <label for="current-master-password-textbox">Current Master Password:</label>
-    <input type="password" id="current-master-password-textbox" placeholder="Current master password" required><br><br>
+    <input type="password" id="current-master-password-textbox" placeholder="Current master password" maxlength="255" required><br><br>
     <label for="new-master-password-textbox">New Master Password:</label>
-    <input type="password" id="new-master-password-textbox" placeholder="New master password" required><br><br>
+    <input type="password" id="new-master-password-textbox" placeholder="New master password" maxlength="255" required><br><br>
     <button type="submit" id="change-password-button">Change Password</button>
   </form>
-  <script src="main.js" defer></script> <!-- Script de la página principal-->
+  <script src="./js/main.js" defer></script> <!-- Script de la página principal-->
 </body>
 
 </html>

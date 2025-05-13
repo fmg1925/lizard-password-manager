@@ -26,7 +26,7 @@ function createConnection() {
   db.connect(err => {
     if (err) {
       console.error('Error connecting:', err);
-      setTimeout(createConnection, 2000);
+      setTimeout(createConnection, 2000); // Reintentar entre conexiones
     } else {
       console.log('Connected to MySQL');
     }
